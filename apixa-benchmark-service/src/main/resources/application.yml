@@ -1,0 +1,20 @@
+﻿server:
+  port: 8089
+
+spring:
+  application:
+    name: apixa-benchmark-service
+  datasource:
+    url: jdbc:sqlite:./data/benchmark.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  threads:
+    virtual:
+      enabled: true
+
+apixa:
+  service-name: apixa-benchmark-service
