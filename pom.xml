@@ -65,7 +65,7 @@
 				<artifactId>spoon-core</artifactId>
 				<version>${spoon.version}</version>
 			</dependency>
-		</dependencyManagement>
+		</dependencies>
 	</dependencyManagement>
 
 	<build>

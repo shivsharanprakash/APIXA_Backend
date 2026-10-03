@@ -31,3 +31,27 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+
+# Maven
+**/target/
+
+# Logs
+*.log
+*.err
+
+# Local databases / runtime data
+**/data/
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

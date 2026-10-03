@@ -1,4 +1,4 @@
-﻿package com.apixa.runtime;
+package com.apixa.runtime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-﻿package com.apixa.gateway;
+package com.apixa.gateway;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

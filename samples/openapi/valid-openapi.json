@@ -1,0 +1,19 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Payment API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/admin/users": {
+      "get": {
+        "summary": "Get admin users",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "evidenceSetId": "STEP12-ADMIN",
+  "analysisRunId": 1,
+  "contractId": "STEP7-CONTRACT",
+  "endpoints": [
+    {
+      "contract": {
+        "method": "GET",
+        "path": "/admin/users",
+        "operationId": "listAdmins",
+        "jsonPath": "$.paths['/admin/users'].get.security",
+        "sourceFile": "step7-contract.yaml",
+        "securitySummary": "AUTHENTICATED roles [ADMIN]",
+        "documentRef": "sha256:step7-contract"
+      },
+      "mapping": {
+        "status": "MATCHED",
+        "confidence": "HIGH",
+        "reason": "Matched to AdminController.users with HIGH confidence",
+        "sourceMethod": "AdminController.users",
+        "sourcePath": "/admin/users",
+        "candidates": [
+          {
+            "className": "AdminController",
+            "methodName": "users",
+            "httpMethod": "GET",
+            "path": "/admin/users",
+            "file": "C:\\Codes\\APIXA\\security-contract-analyzer\\samples\\spring-sample\\src\\main\\java\\com\\example\\admin\\AdminController.java",
+            "lineStart": 19
+          }
+        ]
+      },
+      "sourceEndpoints": [
+        {
+          "className": "AdminController",
+          "methodName": "users",
+          "httpMethod": "GET",
+          "path": "/admin/users",
+          "file": "C:\\Codes\\APIXA\\security-contract-analyzer\\samples\\spring-sample\\src\\main\\java\\com\\example\\admin\\AdminController.java",
+          "lineStart": 19,
+          "lineEnd": 22
+        }
+      ],
+      "sourceSecurity": {
+        "scope": "SECURITY_CONFIGURATION",
+        "operator": "HAS_ROLE",
+        "pathPattern": "/admin/**",
+        "roles": [ "USER" ],
+        "file": "C:\\Codes\\APIXA\\security-contract-analyzer\\samples\\spring-sample\\src\\main\\java\\com\\example\\security\\SecurityConfig.java",
+        "lineStart": 44,
+        "lineEnd": 44
+      },
+      "conformance": {
+        "status": "MISMATCH",
+        "mappingStatus": "MATCHED",
+        "reason": "Contract requires roles [ADMIN] authorization, while the implementation requires roles [USER].",
+        "expectedSummary": "AUTHENTICATED roles [ADMIN]",
+        "implementedSummary": "AUTHENTICATED roles [USER]"
+      }
+    },
+    {
+      "contract": {
+        "method": "GET",
+        "path": "/api/users",
+        "operationId": "listUsers",
+        "jsonPath": "$.paths['/api/users'].get",
+        "securitySummary": "AUTHENTICATED roles [USER]"
+      },
+      "mapping": {
+        "status": "MULTIPLE_CANDIDATES",
+        "reason": "2 implementation endpoints match GET /api/users; ambiguity kept explicit",
+        "candidates": [
+          {
+            "className": "UserController",
+            "methodName": "listUsers",
+            "httpMethod": "GET",
+            "path": "/api/users",
+            "file": "C:\\Codes\\APIXA\\security-contract-analyzer\\samples\\spring-sample\\src\\main\\java\\com\\example\\users\\UserController.java",
+            "lineStart": 18
+          },
+          {
+            "className": "LegacyUserController",
+            "methodName": "listUsersLegacy",
+            "httpMethod": "GET",
+            "path": "/api/users",
+            "file": "C:\\Codes\\APIXA\\security-contract-analyzer\\samples\\spring-sample\\src\\main\\java\\com\\example\\legacy\\LegacyUserController.java",
+            "lineStart": 12
+          }
+        ]
+      },
+      "conformance": {
+        "status": "UNVERIFIED",
+        "mappingStatus": "MULTIPLE_CANDIDATES",
+        "reason": "Multiple source endpoint candidates prevent a unique conformance decision.",
+        "expectedSummary": "AUTHENTICATED roles [USER]"
+      }
+    }
+  ]
+}

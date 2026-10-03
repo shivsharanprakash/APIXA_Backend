@@ -1,4 +1,4 @@
-﻿package com.apixa.project.controller;
+package com.apixa.project.controller;
 
 import com.apixa.project.model.ProjectDtos.*;
 import com.apixa.project.service.ProjectService;
@@ -46,6 +46,23 @@ public class ProjectController {
 
     @GetMapping("/{id}/versions")
     public List<ApiVersionDto> versions(@PathVariable Long id) { return projectService.listVersions(id); }
+
+    @GetMapping("/{id}/versions/{versionId}")
+    public ApiVersionDto version(@PathVariable Long id, @PathVariable Long versionId) {
+        return projectService.getVersion(id, versionId);
+    }
+
+    @PutMapping("/{id}/versions/{versionId}")
+    public ApiVersionDto updateVersion(@PathVariable Long id, @PathVariable Long versionId,
+                                       @RequestBody UpdateVersionRequest request) {
+        return projectService.updateVersion(id, versionId, request);
+    }
+
+    @DeleteMapping("/{id}/versions/{versionId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteVersion(@PathVariable Long id, @PathVariable Long versionId) {
+        projectService.deleteVersion(id, versionId);
+    }
 
     @PostMapping("/{id}/analysis-runs")
     @ResponseStatus(HttpStatus.CREATED)

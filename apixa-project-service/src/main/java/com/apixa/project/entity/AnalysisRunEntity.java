@@ -1,4 +1,4 @@
-﻿package com.apixa.project.entity;
+package com.apixa.project.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
@@ -31,6 +31,7 @@ public class AnalysisRunEntity {
 
     public Long getId() { return id; }
     public Long getProjectId() { return projectId; }
+    public void setProjectId(Long projectId) { this.projectId = projectId; }
     public Long getApiVersionId() { return apiVersionId; }
     public void setApiVersionId(Long apiVersionId) { this.apiVersionId = apiVersionId; }
     public String getStatus() { return status; }

@@ -1,4 +1,4 @@
-﻿package com.apixa.common.trace;
+package com.apixa.common.trace;
 
 import java.util.UUID;
 

@@ -1,0 +1,35 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-02T20:30:26.566+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] c.a.s.runtime.RuntimeSampleApplication   : Starting RuntimeSampleApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 7760 (C:\Codes\APIXA\security-contract-analyzer\samples\runtime-sample\target\apixa-runtime-sample-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\samples\runtime-sample)
+2026-10-02T20:30:26.659+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] c.a.s.runtime.RuntimeSampleApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-10-02T20:30:35.129+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 9090 (http)
+2026-10-02T20:30:35.251+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-02T20:30:35.254+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-02T20:30:35.530+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 8387 ms
+2026-10-02T20:30:42.289+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-02T20:30:46.284+05:30  WARN 7760 --- [apixa-runtime-sample] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-10-02T20:30:46.366+05:30  INFO 7760 --- [apixa-runtime-sample] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-10-02T20:30:46.436+05:30 ERROR 7760 --- [apixa-runtime-sample] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 9090 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 9090 or configure this application to listen on another port.
+

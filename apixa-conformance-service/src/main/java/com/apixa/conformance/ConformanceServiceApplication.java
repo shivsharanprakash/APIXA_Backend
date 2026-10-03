@@ -1,4 +1,4 @@
-﻿package com.apixa.conformance;
+package com.apixa.conformance;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

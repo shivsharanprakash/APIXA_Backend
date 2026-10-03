@@ -1,4 +1,4 @@
-﻿package com.apixa.project.entity;
+package com.apixa.project.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
@@ -24,6 +24,7 @@ public class ApiVersionEntity {
 
     public Long getId() { return id; }
     public Long getProjectId() { return projectId; }
+    public void setProjectId(Long projectId) { this.projectId = projectId; }
     public String getVersionLabel() { return versionLabel; }
     public void setVersionLabel(String versionLabel) { this.versionLabel = versionLabel; }
     public String getOpenapiPath() { return openapiPath; }

@@ -1,0 +1,44 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-03T08:12:41.289+05:30  INFO 18964 --- [apixa-project-service] [           main] c.a.project.ProjectServiceApplication    : Starting ProjectServiceApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 18964 (C:\Codes\APIXA\security-contract-analyzer\apixa-project-service\target\apixa-project-service-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\apixa-project-service)
+2026-10-03T08:12:41.293+05:30  INFO 18964 --- [apixa-project-service] [           main] c.a.project.ProjectServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-10-03T08:12:42.059+05:30  INFO 18964 --- [apixa-project-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-03T08:12:42.119+05:30  INFO 18964 --- [apixa-project-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 45 ms. Found 3 JPA repository interfaces.
+2026-10-03T08:12:42.650+05:30  INFO 18964 --- [apixa-project-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8081 (http)
+2026-10-03T08:12:42.665+05:30  INFO 18964 --- [apixa-project-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-03T08:12:42.665+05:30  INFO 18964 --- [apixa-project-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-03T08:12:42.699+05:30  INFO 18964 --- [apixa-project-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1343 ms
+2026-10-03T08:12:42.880+05:30  INFO 18964 --- [apixa-project-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-03T08:12:42.961+05:30  INFO 18964 --- [apixa-project-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-03T08:12:43.567+05:30  INFO 18964 --- [apixa-project-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-03T08:12:43.618+05:30  INFO 18964 --- [apixa-project-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-03T08:12:43.810+05:30  INFO 18964 --- [apixa-project-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@37806be6
+2026-10-03T08:12:43.813+05:30  INFO 18964 --- [apixa-project-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-03T08:12:43.867+05:30  INFO 18964 --- [apixa-project-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlite:./data/project.db]
+	Database driver: SQLite JDBC
+	Database dialect: SQLiteDialect
+	Database version: 3.50.3
+	Default catalog/schema: undefined/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: SERIALIZABLE [default SERIALIZABLE]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-03T08:12:45.875+05:30  INFO 18964 --- [apixa-project-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-03T08:12:45.927+05:30  INFO 18964 --- [apixa-project-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-03T08:12:46.018+05:30  INFO 18964 --- [apixa-project-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-03T08:12:46.778+05:30  INFO 18964 --- [apixa-project-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8081 (http) with context path '/'
+2026-10-03T08:12:46.794+05:30  INFO 18964 --- [apixa-project-service] [           main] c.a.project.ProjectServiceApplication    : Started ProjectServiceApplication in 5.967 seconds (process running for 6.617)
+2026-10-03T08:13:08.877+05:30  INFO 18964 --- [apixa-project-service] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-03T08:13:08.884+05:30  INFO 18964 --- [apixa-project-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-03T08:13:08.886+05:30  INFO 18964 --- [apixa-project-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

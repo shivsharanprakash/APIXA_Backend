@@ -1,0 +1,10 @@
+server:
+  port: ${apixa.runtime-sample.port:9090}
+
+spring:
+  application:
+    name: apixa-runtime-sample
+
+apixa:
+  runtime-sample:
+    port: 9090

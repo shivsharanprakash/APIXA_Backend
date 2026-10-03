@@ -1,4 +1,4 @@
-﻿package com.apixa.project.model;
+package com.apixa.project.model;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
@@ -26,6 +26,11 @@ public final class ProjectDtos {
             @NotBlank String versionLabel,
             String openapiPath,
             String openapiContent,
+            String notes) {}
+
+    public record UpdateVersionRequest(
+            String versionLabel,
+            String openapiPath,
             String notes) {}
 
     public record StartRunRequest(

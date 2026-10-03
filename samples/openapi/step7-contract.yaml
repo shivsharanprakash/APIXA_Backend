@@ -1,0 +1,167 @@
+# Step 7 contract-extraction test input.
+# Deterministic, deliberately small, and valid OpenAPI 3.0.3.
+# Covered by the extraction result:
+#   - root (global) security: bearerAuth
+#   - /health            operation-level "security: []"  -> explicitlyPublic
+#   - /admin/users GET   operation-level bearerAuth      -> requiresSecurity, bearer scheme reference
+#   - /admin/users POST  bearerAuth + required request body (application/json, $ref)
+#   - /admin/reports     oauth2 with the "admin" scope   -> required scopes
+#   - /users/{id}        no operation security           -> inherits the global bearerAuth
+#                        path parameter (preserved as /users/{id}) + query parameter with enum
+#   - /public/status     security: [{apiKeyAuth: []}, {}] -> anonymous alternative allowed
+#   - responses 200 / 401 / 403 declared
+openapi: 3.0.3
+info:
+  title: Payment API
+  version: 1.0.0
+
+security:
+  - bearerAuth: []
+
+paths:
+  /health:
+    get:
+      operationId: health
+      summary: Health check
+      security: []
+      responses:
+        '200':
+          description: Successful response
+
+  /admin/users:
+    get:
+      operationId: getAdminUsers
+      summary: Get admin users
+      description: Returns all users. Requires a bearer token.
+      tags:
+        - admin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    post:
+      operationId: createAdminUser
+      summary: Create admin user
+      tags:
+        - admin
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+
+  /admin/reports:
+    get:
+      operationId: getAdminReports
+      summary: Get admin reports
+      tags:
+        - admin
+      security:
+        - oauth2:
+            - admin
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /users/{id}:
+    get:
+      operationId: getUserById
+      summary: Get user by id
+      description: Inherits the global bearerAuth requirement (no operation-level security).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User id
+          schema:
+            type: string
+        - name: verbose
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - summary
+              - full
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /public/status:
+    get:
+      operationId: publicStatus
+      summary: Public status
+      description: Reachable anonymously (api key or no credentials at all).
+      security:
+        - apiKeyAuth: []
+        - {}
+      responses:
+        '200':
+          description: Successful response
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/token
+          scopes:
+            admin: Full admin access
+            user: Read-only user access
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'

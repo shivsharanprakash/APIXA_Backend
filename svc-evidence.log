@@ -1,0 +1,44 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-03T08:10:54.568+05:30  INFO 10972 --- [apixa-evidence-service] [           main] c.a.evidence.EvidenceServiceApplication  : Starting EvidenceServiceApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 10972 (C:\Codes\APIXA\security-contract-analyzer\apixa-evidence-service\target\apixa-evidence-service-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\apixa-evidence-service)
+2026-10-03T08:10:54.584+05:30  INFO 10972 --- [apixa-evidence-service] [           main] c.a.evidence.EvidenceServiceApplication  : No active profile set, falling back to 1 default profile: "default"
+2026-10-03T08:10:56.228+05:30  INFO 10972 --- [apixa-evidence-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-03T08:10:56.318+05:30  INFO 10972 --- [apixa-evidence-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 1 JPA repository interface.
+2026-10-03T08:10:57.208+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8086 (http)
+2026-10-03T08:10:57.258+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-03T08:10:57.261+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-03T08:10:57.341+05:30  INFO 10972 --- [apixa-evidence-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2630 ms
+2026-10-03T08:10:57.682+05:30  INFO 10972 --- [apixa-evidence-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-03T08:10:57.896+05:30  INFO 10972 --- [apixa-evidence-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-03T08:10:58.948+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-03T08:10:59.039+05:30  INFO 10972 --- [apixa-evidence-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-03T08:10:59.237+05:30  INFO 10972 --- [apixa-evidence-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@71b3ba5a
+2026-10-03T08:10:59.242+05:30  INFO 10972 --- [apixa-evidence-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-03T08:10:59.307+05:30  INFO 10972 --- [apixa-evidence-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlite:./data/evidence.db]
+	Database driver: SQLite JDBC
+	Database dialect: SQLiteDialect
+	Database version: 3.50.3
+	Default catalog/schema: undefined/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: SERIALIZABLE [default SERIALIZABLE]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-03T08:11:00.421+05:30  INFO 10972 --- [apixa-evidence-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-03T08:11:00.480+05:30  INFO 10972 --- [apixa-evidence-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-03T08:11:00.588+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-03T08:11:01.350+05:30  INFO 10972 --- [apixa-evidence-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8086 (http) with context path '/'
+2026-10-03T08:11:01.364+05:30  INFO 10972 --- [apixa-evidence-service] [           main] c.a.evidence.EvidenceServiceApplication  : Started EvidenceServiceApplication in 7.596 seconds (process running for 8.488)
+2026-10-03T08:11:46.459+05:30  INFO 10972 --- [apixa-evidence-service] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-03T08:11:46.460+05:30  INFO 10972 --- [apixa-evidence-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-03T08:11:46.461+05:30  INFO 10972 --- [apixa-evidence-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

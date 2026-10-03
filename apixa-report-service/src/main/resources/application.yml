@@ -1,4 +1,4 @@
-﻿server:
+server:
   port: 8090
 
 spring:
@@ -18,3 +18,8 @@ spring:
 
 apixa:
   service-name: apixa-report-service
+  report:
+    # Generated report artifacts are optional. In-memory retrieval always works;
+    # set write-files=true to also keep report-<reportId>.json|html|pdf in output-dir.
+    write-files: false
+    output-dir: ./data/reports

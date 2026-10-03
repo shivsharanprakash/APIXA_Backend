@@ -1,4 +1,4 @@
-﻿package com.apixa.project.repository;
+package com.apixa.project.repository;
 
 import com.apixa.project.entity.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

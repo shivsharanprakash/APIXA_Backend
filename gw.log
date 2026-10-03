@@ -1,0 +1,21 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-03T08:09:45.883+05:30  INFO 27464 --- [apixa-gateway] [           main] com.apixa.gateway.GatewayApplication     : Starting GatewayApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 27464 (C:\Codes\APIXA\security-contract-analyzer\apixa-gateway\target\apixa-gateway-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\apixa-gateway)
+2026-10-03T08:09:45.889+05:30  INFO 27464 --- [apixa-gateway] [           main] com.apixa.gateway.GatewayApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-10-03T08:09:47.089+05:30  INFO 27464 --- [apixa-gateway] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-10-03T08:09:47.105+05:30  INFO 27464 --- [apixa-gateway] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-03T08:09:47.107+05:30  INFO 27464 --- [apixa-gateway] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-03T08:09:47.136+05:30  INFO 27464 --- [apixa-gateway] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1168 ms
+2026-10-03T08:09:47.629+05:30  INFO 27464 --- [apixa-gateway] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-10-03T08:09:47.647+05:30  INFO 27464 --- [apixa-gateway] [           main] com.apixa.gateway.GatewayApplication     : Started GatewayApplication in 2.318 seconds (process running for 2.91)
+2026-10-03T08:10:06.780+05:30  INFO 27464 --- [apixa-gateway] [nio-8080-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-03T08:10:06.780+05:30  INFO 27464 --- [apixa-gateway] [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-03T08:10:06.783+05:30  INFO 27464 --- [apixa-gateway] [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms

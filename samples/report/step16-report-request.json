@@ -1,0 +1,258 @@
+{
+  "project": {
+    "id": 1,
+    "name": "APIXA Demo",
+    "description": "Controlled Step 16 report snapshot",
+    "apiName": "demo-api",
+    "baseUrl": "http://localhost:9090",
+    "sourcePath": "C:/demo/src",
+    "createdAt": "2026-01-10T09:00:00Z"
+  },
+  "apiVersion": {
+    "id": 12,
+    "projectId": 1,
+    "versionLabel": "V2",
+    "openapiPath": "C:/demo/openapi.yaml",
+    "openapiHash": "sha256-demo-openapi",
+    "createdAt": "2026-01-10T09:05:00Z"
+  },
+  "analysisRun": {
+    "id": 42,
+    "projectId": 1,
+    "apiVersionId": 12,
+    "status": "COMPLETED",
+    "openapiHash": "sha256-demo-openapi",
+    "sourceHash": "sha256-demo-source",
+    "analyzerVersion": "1.0.0",
+    "resultSummary": "1 endpoint analyzed",
+    "startedAt": "2026-01-10T09:06:00Z",
+    "endedAt": "2026-01-10T09:06:12Z"
+  },
+  "contract": {
+    "contractId": "C-1001",
+    "status": "EXTRACTED",
+    "sourceFile": "openapi.yaml",
+    "openapiVersion": "3.0.3",
+    "openapiHash": "sha256-demo-openapi",
+    "title": "Demo API",
+    "apiVersion": "2.0.0",
+    "endpointCount": 1,
+    "securitySchemeCount": 1,
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/admin/users",
+        "operationId": "listAdmins",
+        "jsonPath": "$.paths['/admin/users'].get",
+        "sourceFile": "openapi.yaml",
+        "summary": "List administrative users",
+        "deprecated": false,
+        "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false }
+      }
+    ]
+  },
+  "sourceAnalysis": {
+    "projectPath": "C:/demo/src",
+    "analysisType": "SECURITY",
+    "status": "COMPLETED",
+    "analyzerVersion": "1.0.0",
+    "analyzedFiles": 5,
+    "endpointCount": 1,
+    "securityRuleCount": 1,
+    "endpoints": [
+      {
+        "className": "com.demo.AdminController",
+        "methodName": "list",
+        "httpMethod": "GET",
+        "path": "/admin/users",
+        "file": "AdminController.java",
+        "lineStart": 20,
+        "controllerPackage": "com.demo",
+        "parameterCount": 0
+      }
+    ],
+    "securityRules": [
+      {
+        "file": "SecurityConfig.java",
+        "lineStart": 44,
+        "lineEnd": 44,
+        "ruleType": "ROLE_CHECK",
+        "pathPattern": "/admin/**",
+        "roles": ["USER"],
+        "scope": "SECURITY_CONFIGURATION",
+        "operator": "HAS_ROLE",
+        "className": null,
+        "methodName": null,
+        "complex": false,
+        "unresolved": false,
+        "catchAll": false
+      }
+    ]
+  },
+  "mappings": [
+    {
+      "method": "GET",
+      "path": "/admin/users",
+      "status": "MATCHED",
+      "confidence": "HIGH",
+      "implementationClass": "com.demo.AdminController",
+      "implementationMethod": "list",
+      "implementationPath": "/admin/users",
+      "candidateCount": 1,
+      "reason": "Matched to com.demo.AdminController.list with HIGH confidence",
+      "candidates": [
+        { "className": "com.demo.AdminController", "methodName": "list", "httpMethod": "GET", "path": "/admin/users", "file": "AdminController.java", "lineStart": 20 }
+      ]
+    }
+  ],
+  "conformance": [
+    {
+      "contractMethod": "GET",
+      "contractPath": "/admin/users",
+      "operationId": "listAdmins",
+      "mappingStatus": "MATCHED",
+      "conformanceStatus": "MISMATCH",
+      "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+      "implementedSecurity": { "authentication": "AUTHENTICATED", "roles": ["USER"], "permitAll": false, "unknown": false },
+      "sourceEndpointClass": "com.demo.AdminController",
+      "sourceEndpointMethod": "list",
+      "sourceEndpointPath": "/admin/users",
+      "appliedRule": { "scope": "SECURITY_CONFIGURATION", "operator": "HAS_ROLE", "pathPattern": "/admin/**", "tier": 2001, "file": "SecurityConfig.java", "lineStart": 44 },
+      "evidenceCodes": ["EV-CONTRACT-1", "EV-MAPPING-1", "EV-SOURCE-1", "EV-SOURCE-SEC-1", "EV-CONF-1"],
+      "reason": "Contract requires roles [ADMIN] authorization, while the implementation requires roles [USER]."
+    }
+  ],
+  "evidence": {
+    "evidenceSetId": "ES-42-1001",
+    "analysisRunId": 42,
+    "contractId": "C-1001",
+    "itemCount": 5,
+    "items": [
+      { "evidenceCode": "EV-CONTRACT-1", "sourceType": "CONTRACT", "evidenceSetCode": "ES-42-1001", "httpMethod": "GET", "endpointPath": "/admin/users", "jsonPath": "$.paths['/admin/users'].get", "description": "Contract endpoint declared with ADMIN security" },
+      { "evidenceCode": "EV-MAPPING-1", "sourceType": "MAPPING", "evidenceSetCode": "ES-42-1001", "httpMethod": "GET", "endpointPath": "/admin/users", "description": "Mapped to com.demo.AdminController#list", "relatedEvidenceCodes": ["EV-CONTRACT-1", "EV-SOURCE-1"] },
+      { "evidenceCode": "EV-SOURCE-1", "sourceType": "SOURCE", "evidenceSetCode": "ES-42-1001", "httpMethod": "GET", "endpointPath": "/admin/users", "file": "AdminController.java", "lineStart": 20, "lineEnd": 22, "description": "Source endpoint declaration", "relatedEvidenceCodes": ["EV-MAPPING-1"] },
+      { "evidenceCode": "EV-SOURCE-SEC-1", "sourceType": "SOURCE_SECURITY", "evidenceSetCode": "ES-42-1001", "httpMethod": "GET", "endpointPath": "/admin/**", "file": "SecurityConfig.java", "lineStart": 44, "lineEnd": 44, "ruleType": "ROLE_CHECK", "pathPattern": "/admin/**", "description": "Source security rule HAS_ROLE /admin/** with roles [USER]", "relatedEvidenceCodes": ["EV-SOURCE-1"] },
+      { "evidenceCode": "EV-CONF-1", "sourceType": "CONFORMANCE", "evidenceSetCode": "ES-42-1001", "httpMethod": "GET", "endpointPath": "/admin/users", "description": "Conformance verdict MISMATCH", "relatedEvidenceCodes": ["EV-MAPPING-1", "EV-SOURCE-SEC-1"] }
+    ]
+  },
+  "runtime": [
+    {
+      "verificationId": "vr-0001",
+      "executionStatus": "COMPLETED",
+      "method": "GET",
+      "url": "http://localhost:9090/admin/users",
+      "observedStatusCode": 401,
+      "observedAt": "2026-01-10T09:07:00Z",
+      "durationMs": 34,
+      "errorType": null,
+      "errorMessage": null,
+      "requestHeaders": { "Authorization": "Basic YWRtaW46YWRtaW4xMjM=", "Accept": "application/json" },
+      "responseHeaders": { "content-type": "application/json", "Set-Cookie": "JSESSIONID=SECRETVALUE" }
+    }
+  ],
+  "impact": {
+    "v1VersionId": "V1",
+    "v2VersionId": "V2",
+    "status": "COMPLETED",
+    "impactCount": 2,
+    "impacts": [
+      {
+        "method": "GET",
+        "path": "/admin/users",
+        "category": "SECURITY_CHANGED",
+        "v1Path": "/admin/users",
+        "v2Path": "/admin/users",
+        "v1Summary": "AUTHENTICATED roles [ADMIN]",
+        "v2Summary": "AUTHENTICATED roles [USER]",
+        "v1ConformanceStatus": "MATCH",
+        "v2ConformanceStatus": "MISMATCH",
+        "v1EvidenceCodes": ["EV-V1-CONF"],
+        "v2EvidenceCodes": ["EV-V2-CONF"],
+        "details": "Implemented security changed from AUTHENTICATED roles [ADMIN] to AUTHENTICATED roles [USER]"
+      },
+      {
+        "method": "GET",
+        "path": "/admin/users",
+        "category": "CONFORMANCE_CHANGED",
+        "v1Path": "/admin/users",
+        "v2Path": "/admin/users",
+        "v1ConformanceStatus": "MATCH",
+        "v2ConformanceStatus": "MISMATCH",
+        "v1EvidenceCodes": ["EV-V1-CONF"],
+        "v2EvidenceCodes": ["EV-V2-CONF"],
+        "details": "Conformance changed from MATCH to MISMATCH"
+      }
+    ]
+  },
+  "benchmark": {
+    "benchmarkId": "step15-v1",
+    "status": "COMPLETED",
+    "interpretation": "Evaluation performed on 6 controlled benchmark cases. This measures only the supplied controlled fixture population and is not a claim about APIXA accuracy in general.",
+    "totalCases": 6,
+    "executedCases": 6,
+    "skippedCases": 0,
+    "passedCases": 5,
+    "failedCases": 1,
+    "accuracy": 0.8333333333333334,
+    "conformanceMetrics": {
+      "accuracy": 0.75,
+      "precision": 1.0,
+      "recall": 0.6666666666666666,
+      "f1": 0.8,
+      "positiveClass": "MISMATCH",
+      "confusionMatrix": {
+        "MATCH": { "MATCH": 1, "MISMATCH": 0, "PARTIAL": 0, "UNVERIFIED": 0 },
+        "MISMATCH": { "MATCH": 1, "MISMATCH": 1, "PARTIAL": 0, "UNVERIFIED": 0 },
+        "PARTIAL": { "MATCH": 0, "MISMATCH": 0, "PARTIAL": 1, "UNVERIFIED": 0 },
+        "UNVERIFIED": { "MATCH": 0, "MISMATCH": 0, "PARTIAL": 0, "UNVERIFIED": 1 }
+      },
+      "expectedCounts": { "MATCH": 1, "MISMATCH": 2, "PARTIAL": 1, "UNVERIFIED": 1 },
+      "actualCounts": { "MATCH": 2, "MISMATCH": 1, "PARTIAL": 1, "UNVERIFIED": 1 },
+      "metricNotes": ["binary metrics use positive class MISMATCH; UNVERIFIED counts as negative there but keeps its own confusion-matrix row"]
+    },
+    "mappingMetrics": {
+      "totalCases": 1, "correctCases": 1, "correctlyMatched": 1, "correctlyUnmatched": 0,
+      "correctlyAmbiguous": 0, "correctlyUncertain": 0,
+      "metricNotes": ["MULTIPLE_CANDIDATES (ambiguous) is counted separately and never as UNMATCHED"]
+    },
+    "impactMetrics": {
+      "changeCases": 1, "correctlyDetected": 1, "missedChanges": 0, "falseChanges": 0,
+      "unchangedCases": 0, "unchangedPreserved": 0,
+      "metricNotes": ["detection only: Step 14 defines no severity, so no impact category is weighted or ranked"]
+    },
+    "runtimeMetrics": {
+      "executedCases": 1, "passedCases": 1, "failedCases": 0, "skippedCases": 0,
+      "requestExecutionSuccess": 1, "observedStatusCorrect": 1, "timeoutDetection": 0,
+      "connectionFailureDetection": 0,
+      "latency": { "samples": 1, "minMs": 34.0, "maxMs": 34.0, "meanMs": 34.0, "medianMs": 34.0 },
+      "metricNotes": ["latency figures are raw observations, not a quality rating"]
+    },
+    "mutationMetrics": {
+      "totalCases": 1, "correctCases": 1, "incorrectCases": 0,
+      "metricNotes": ["mutations are applied to an in-memory copy of the base input; no repository file is modified"]
+    },
+    "determinism": {
+      "repeats": 3,
+      "deterministicContent": true,
+      "deterministicOrdering": true,
+      "varyingMetadataFields": ["durationMs", "verificationId", "observedAt"],
+      "note": "Compared 3 executions of deterministic cases: extracted results and case ordering."
+    },
+    "cases": [
+      { "caseId": "CONF-001", "group": "CONFORMANCE", "description": "ADMIN contract vs ADMIN implementation", "status": "PASSED", "expected": { "conformanceStatus": "MATCH" }, "actual": { "conformanceStatus": "MATCH" } },
+      { "caseId": "CONF-002", "group": "CONFORMANCE", "description": "ADMIN contract vs USER implementation", "status": "PASSED", "expected": { "conformanceStatus": "MISMATCH" }, "actual": { "conformanceStatus": "MISMATCH" } },
+      { "caseId": "CONF-003", "group": "CONFORMANCE", "description": "ADMIN contract vs authentication only", "status": "PASSED", "expected": { "conformanceStatus": "PARTIAL" }, "actual": { "conformanceStatus": "PARTIAL" } },
+      { "caseId": "CONF-004", "group": "CONFORMANCE", "description": "Unresolved source security", "status": "PASSED", "expected": { "conformanceStatus": "UNVERIFIED" }, "actual": { "conformanceStatus": "UNVERIFIED" } },
+      { "caseId": "CONF-006", "group": "CONFORMANCE", "description": "No source mapping", "status": "PASSED", "expected": { "conformanceStatus": "UNVERIFIED" }, "actual": { "conformanceStatus": "UNVERIFIED" } },
+      { "caseId": "CTRL-001", "group": "CONFORMANCE", "description": "NEGATIVE CONTROL: deliberately wrong ground truth; this case is expected to fail", "status": "FAILED", "expected": { "conformanceStatus": "MISMATCH" }, "actual": { "conformanceStatus": "MATCH" }, "discrepancy": "conformanceStatus: expected=MISMATCH, actual=MATCH" }
+    ]
+  },
+  "limitations": [
+    "Contract Service imports are held in memory; a service restart loses the imported document.",
+    "Source Analysis resolves only statically recognizable Spring security constructs.",
+    "Rules whose role argument is a constant reference stay unresolved and are reported as UNVERIFIED.",
+    "Ambiguous mappings (MULTIPLE_CANDIDATES) never reach a security verdict.",
+    "Runtime Service and Impact Service are stateless; results are not persisted.",
+    "Benchmark metrics describe the controlled fixture population only, including the deliberate CTRL-001 negative control."
+  ]
+}

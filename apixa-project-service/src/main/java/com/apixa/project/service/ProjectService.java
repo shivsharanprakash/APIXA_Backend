@@ -1,4 +1,4 @@
-﻿package com.apixa.project.service;
+package com.apixa.project.service;
 
 import com.apixa.common.error.ApiException;
 import com.apixa.project.entity.*;
@@ -19,6 +19,10 @@ import java.util.Map;
 public class ProjectService {
 
     private static final List<String> RUN_STATUSES = List.of("CREATED", "RUNNING", "COMPLETED", "FAILED");
+    // Minimal lifecycle: CREATED -> RUNNING -> COMPLETED, CREATED/RUNNING -> FAILED. COMPLETED/FAILED are terminal.
+    private static final Map<String, List<String>> RUN_TRANSITIONS = Map.of(
+            "CREATED", List.of("RUNNING", "FAILED"),
+            "RUNNING", List.of("COMPLETED", "FAILED"));
 
     private final ProjectRepository projectRepository;
     private final ApiVersionRepository apiVersionRepository;
@@ -87,6 +91,45 @@ public class ProjectService {
         return apiVersionRepository.findByProjectIdOrderByIdDesc(projectId).stream().map(this::toDto).toList();
     }
 
+    public ApiVersionDto getVersion(Long projectId, Long versionId) {
+        requireProject(projectId);
+        return toDto(requireVersion(projectId, versionId));
+    }
+
+    @Transactional
+    public ApiVersionDto updateVersion(Long projectId, Long versionId, UpdateVersionRequest req) {
+        requireProject(projectId);
+        ApiVersionEntity v = requireVersion(projectId, versionId);
+        if (req.versionLabel() != null) {
+            if (req.versionLabel().isBlank()) {
+                throw ApiException.badRequest("Version label must not be blank");
+            }
+            if (!req.versionLabel().equals(v.getVersionLabel())
+                    && apiVersionRepository.existsByProjectIdAndVersionLabel(projectId, req.versionLabel())) {
+                throw ApiException.badRequest("Version label '" + req.versionLabel() + "' already exists for project " + projectId);
+            }
+            v.setVersionLabel(req.versionLabel());
+        }
+        if (req.openapiPath() != null) v.setOpenapiPath(req.openapiPath());
+        if (req.notes() != null) v.setNotes(req.notes());
+        return toDto(apiVersionRepository.save(v));
+    }
+
+    @Transactional
+    public void deleteVersion(Long projectId, Long versionId) {
+        requireProject(projectId);
+        ApiVersionEntity v = requireVersion(projectId, versionId);
+        analysisRunRepository.findByApiVersionId(versionId)
+                .forEach(r -> analysisRunRepository.deleteById(r.getId()));
+        apiVersionRepository.deleteById(v.getId());
+    }
+
+    private ApiVersionEntity requireVersion(Long projectId, Long versionId) {
+        return apiVersionRepository.findById(versionId)
+                .filter(v -> v.getProjectId().equals(projectId))
+                .orElseThrow(() -> ApiException.notFound("API version " + versionId + " not found"));
+    }
+
     @Transactional
     public AnalysisRunDto startRun(Long projectId, StartRunRequest req) {
         requireProject(projectId);
@@ -129,6 +172,7 @@ public class ProjectService {
         }
         AnalysisRunEntity run = analysisRunRepository.findById(runId)
                 .orElseThrow(() -> ApiException.notFound("Analysis run " + runId + " not found"));
+        requireTransition(run, normalized);
         run.setStatus(normalized);
         if (normalized.equals("COMPLETED") || normalized.equals("FAILED")) {
             run.setEndedAt(Instant.now());
@@ -140,10 +184,19 @@ public class ProjectService {
     public AnalysisRunDto completeRun(Long runId, String resultSummary) {
         AnalysisRunEntity run = analysisRunRepository.findById(runId)
                 .orElseThrow(() -> ApiException.notFound("Analysis run " + runId + " not found"));
+        requireTransition(run, "COMPLETED");
         run.setStatus("COMPLETED");
         run.setResultSummary(resultSummary);
         run.setEndedAt(Instant.now());
         return toDto(analysisRunRepository.save(run));
+    }
+
+    private void requireTransition(AnalysisRunEntity run, String target) {
+        List<String> allowed = RUN_TRANSITIONS.getOrDefault(run.getStatus(), List.of());
+        if (!allowed.contains(target)) {
+            throw ApiException.badRequest("Invalid run status transition: " + run.getStatus() + " -> " + target
+                    + ". Allowed from " + run.getStatus() + ": " + allowed);
+        }
     }
 
     private void requireProject(Long projectId) {

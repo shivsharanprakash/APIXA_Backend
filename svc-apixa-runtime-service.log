@@ -1,0 +1,45 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-02T20:30:26.404+05:30  INFO 9524 --- [apixa-runtime-service] [           main] c.a.runtime.RuntimeServiceApplication    : Starting RuntimeServiceApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 9524 (C:\Codes\APIXA\security-contract-analyzer\apixa-runtime-service\target\apixa-runtime-service-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\apixa-runtime-service)
+2026-10-02T20:30:26.430+05:30  INFO 9524 --- [apixa-runtime-service] [           main] c.a.runtime.RuntimeServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-10-02T20:30:33.603+05:30  INFO 9524 --- [apixa-runtime-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-02T20:30:33.764+05:30  INFO 9524 --- [apixa-runtime-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 88 ms. Found 0 JPA repository interfaces.
+2026-10-02T20:30:43.867+05:30  INFO 9524 --- [apixa-runtime-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8087 (http)
+2026-10-02T20:30:43.964+05:30  INFO 9524 --- [apixa-runtime-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-02T20:30:43.973+05:30  INFO 9524 --- [apixa-runtime-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-02T20:30:44.203+05:30  INFO 9524 --- [apixa-runtime-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 17158 ms
+2026-10-02T20:30:47.697+05:30  INFO 9524 --- [apixa-runtime-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-02T20:30:48.351+05:30  INFO 9524 --- [apixa-runtime-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-02T20:30:52.151+05:30  INFO 9524 --- [apixa-runtime-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-02T20:30:52.373+05:30  INFO 9524 --- [apixa-runtime-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-02T20:30:53.070+05:30  INFO 9524 --- [apixa-runtime-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@36cfe107
+2026-10-02T20:30:53.079+05:30  INFO 9524 --- [apixa-runtime-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-02T20:30:53.296+05:30  INFO 9524 --- [apixa-runtime-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlite:./data/runtime.db]
+	Database driver: SQLite JDBC
+	Database dialect: SQLiteDialect
+	Database version: 3.50.3
+	Default catalog/schema: undefined/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: SERIALIZABLE [default SERIALIZABLE]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-02T20:30:55.292+05:30  INFO 9524 --- [apixa-runtime-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-02T20:30:55.546+05:30  INFO 9524 --- [apixa-runtime-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-02T20:30:58.407+05:30  INFO 9524 --- [apixa-runtime-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8087 (http) with context path '/'
+2026-10-02T20:30:58.451+05:30  INFO 9524 --- [apixa-runtime-service] [           main] c.a.runtime.RuntimeServiceApplication    : Started RuntimeServiceApplication in 40.474 seconds (process running for 43.936)
+2026-10-02T20:40:03.323+05:30  INFO 9524 --- [apixa-runtime-service] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-02T20:40:03.337+05:30  INFO 9524 --- [apixa-runtime-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-02T20:40:03.391+05:30  INFO 9524 --- [apixa-runtime-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 51 ms
+2026-10-02T20:59:35.520+05:30  WARN 9524 --- [apixa-runtime-service] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m1s484ms149µs500ns).
+2026-10-02T22:51:34.169+05:30  WARN 9524 --- [apixa-runtime-service] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h52m281ms681µs500ns).

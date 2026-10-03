@@ -1,4 +1,4 @@
-﻿package com.apixa.project.entity;
+package com.apixa.project.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;

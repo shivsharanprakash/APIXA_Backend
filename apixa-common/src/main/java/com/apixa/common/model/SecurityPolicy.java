@@ -1,4 +1,4 @@
-﻿package com.apixa.common.model;
+package com.apixa.common.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
@@ -16,7 +16,7 @@ public record SecurityPolicy(
 
     public static final SecurityPolicy UNKNOWN = new SecurityPolicy(null, null, null, null, null, false, true);
 
-    public static SecurityPolicy permitAll() {
+    public static SecurityPolicy permitAllPolicy() {
         return new SecurityPolicy("NONE", null, null, null, null, true, false);
     }
 

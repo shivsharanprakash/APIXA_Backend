@@ -1,4 +1,4 @@
-﻿package com.apixa.common.error;
+package com.apixa.common.error;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-﻿package com.apixa.evidence;
+package com.apixa.evidence;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: apixa-gateway
+  servlet:
+    multipart:
+      # The gateway must not parse multipart uploads: it forwards the raw bytes to the Contract Service,
+      # which owns the MultipartFile. Letting Spring resolve the parts here would consume the request
+      # stream and leave nothing to forward.
+      enabled: false
+  # The gateway owns no database. JPA arrives transitively via apixa-common
+  # (spring-boot-starter-data-jpa); without a datasource it would fail at startup.
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration
+
+apixa:
+  gateway:
+    # Bounded proxy timeouts: a downstream service can never hang a gateway request indefinitely.
+    connect-timeout-ms: 2000
+    read-timeout-ms: 120000
+  services:
+    # Property names mirror GatewayServicesProperties (kebab-case -> camelCase binding).
+    # Ports match each service's own application.yml (source of truth).
+    project-service: http://localhost:8081
+    contract-service: http://localhost:8082
+    source-analysis-service: http://localhost:8083
+    mapping-service: http://localhost:8084
+    conformance-service: http://localhost:8085
+    evidence-service: http://localhost:8086
+    runtime-service: http://localhost:8087
+    impact-service: http://localhost:8088
+    benchmark-service: http://localhost:8089
+    report-service: http://localhost:8090

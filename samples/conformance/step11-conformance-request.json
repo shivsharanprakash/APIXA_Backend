@@ -1,0 +1,304 @@
+{
+    "securityRules":  [
+                          {
+                              "scope":  "SECURITY_CONFIGURATION",
+                              "operator":  "PERMIT_ALL",
+                              "pathPattern":  "/health",
+                              "file":  "C:\\src\\SecurityConfig.java",
+                              "lineStart":  40
+                          },
+                          {
+                              "scope":  "SECURITY_CONFIGURATION",
+                              "operator":  "HAS_ROLE",
+                              "pathPattern":  "/admin/**",
+                              "roles":  [
+                                            "USER"
+                                        ],
+                              "file":  "C:\\src\\SecurityConfig.java",
+                              "lineStart":  44
+                          },
+                          {
+                              "scope":  "SECURITY_CONFIGURATION",
+                              "operator":  "HAS_ROLE",
+                              "pathPattern":  "/admin/reports",
+                              "roles":  [
+                                            "ADMIN"
+                                        ],
+                              "file":  "C:\\src\\SecurityConfig.java",
+                              "lineStart":  47
+                          },
+                          {
+                              "scope":  "SECURITY_CONFIGURATION",
+                              "operator":  "AUTHENTICATED",
+                              "pathPattern":  "**",
+                              "catchAll":  true,
+                              "file":  "C:\\src\\SecurityConfig.java",
+                              "lineStart":  51
+                          },
+                          {
+                              "scope":  "METHOD",
+                              "operator":  "HAS_ROLE",
+                              "className":  "DynamicController",
+                              "methodName":  "dynamic",
+                              "expression":  "hasRole(roleName)",
+                              "unresolved":  true,
+                              "file":  "C:\\src\\DynamicController.java",
+                              "lineStart":  14
+                          },
+                          {
+                              "scope":  "SECURITY_CONFIGURATION",
+                              "operator":  "HAS_ANY_AUTHORITY",
+                              "pathPattern":  "/private/**",
+                              "authorities":  [
+                                                  "SCOPE_read"
+                                              ],
+                              "file":  "C:\\src\\SecurityConfig.java",
+                              "lineStart":  55
+                          }
+                      ],
+    "contractEndpoints":  [
+                              {
+                                  "method":  "GET",
+                                  "path":  "/health",
+                                  "operationId":  "health",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "NONE",
+                                                           "permitAll":  true,
+                                                           "unknown":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/admin/users",
+                                  "operationId":  "listAdmins",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "ADMIN"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/admin/reports",
+                                  "operationId":  "adminReports",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "ADMIN"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/api/users",
+                                  "operationId":  "listUsers",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "USER"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/missing",
+                                  "operationId":  "missingThing",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "USER"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/admin/secret",
+                                  "operationId":  "secretThing",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "ADMIN"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/dynamic",
+                                  "operationId":  "dynamicThing",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "AUTHENTICATED",
+                                                           "roles":  [
+                                                                         "ADMIN"
+                                                                     ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              },
+                              {
+                                  "method":  "GET",
+                                  "path":  "/private/docs",
+                                  "operationId":  "docsThing",
+                                  "expectedSecurity":  {
+                                                           "authentication":  "OAUTH2",
+                                                           "schemeName":  "oauth2",
+                                                           "scopes":  [
+                                                                          "read"
+                                                                      ],
+                                                           "unknown":  false,
+                                                           "permitAll":  false
+                                                       }
+                              }
+                          ],
+    "mappings":  [
+                     {
+                         "method":  "GET",
+                         "path":  "/health",
+                         "status":  "MATCHED",
+                         "implementationClass":  "HealthController",
+                         "implementationMethod":  "health",
+                         "implementationPath":  "/health",
+                         "candidates":  [
+                                            {
+                                                "className":  "HealthController",
+                                                "methodName":  "health",
+                                                "httpMethod":  "GET",
+                                                "path":  "/health",
+                                                "file":  "C:\\src\\HealthController.java",
+                                                "lineStart":  10
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/admin/users",
+                         "status":  "MATCHED",
+                         "implementationClass":  "AdminController",
+                         "implementationMethod":  "users",
+                         "implementationPath":  "/admin/users",
+                         "candidates":  [
+                                            {
+                                                "className":  "AdminController",
+                                                "methodName":  "users",
+                                                "httpMethod":  "GET",
+                                                "path":  "/admin/users",
+                                                "file":  "C:\\src\\AdminController.java",
+                                                "lineStart":  19
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/admin/reports",
+                         "status":  "MATCHED",
+                         "implementationClass":  "AdminController",
+                         "implementationMethod":  "reports",
+                         "implementationPath":  "/admin/reports",
+                         "candidates":  [
+                                            {
+                                                "className":  "AdminController",
+                                                "methodName":  "reports",
+                                                "httpMethod":  "GET",
+                                                "path":  "/admin/reports",
+                                                "file":  "C:\\src\\AdminController.java",
+                                                "lineStart":  25
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/api/users",
+                         "status":  "MULTIPLE_CANDIDATES",
+                         "candidates":  [
+                                            {
+                                                "className":  "UserController",
+                                                "methodName":  "listUsers",
+                                                "httpMethod":  "GET",
+                                                "path":  "/api/users",
+                                                "file":  "C:\\src\\UserController.java",
+                                                "lineStart":  18
+                                            },
+                                            {
+                                                "className":  "LegacyUserController",
+                                                "methodName":  "listUsersLegacy",
+                                                "httpMethod":  "GET",
+                                                "path":  "/api/users",
+                                                "file":  "C:\\src\\LegacyUserController.java",
+                                                "lineStart":  12
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/missing",
+                         "status":  "UNMATCHED",
+                         "candidates":  [
+
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/admin/secret",
+                         "status":  "MATCHED",
+                         "implementationClass":  "AdminController",
+                         "implementationMethod":  "secret",
+                         "implementationPath":  "/admin/secret",
+                         "candidates":  [
+                                            {
+                                                "className":  "AdminController",
+                                                "methodName":  "secret",
+                                                "httpMethod":  "GET",
+                                                "path":  "/admin/secret",
+                                                "file":  "C:\\src\\AdminController.java",
+                                                "lineStart":  31
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/dynamic",
+                         "status":  "MATCHED",
+                         "implementationClass":  "DynamicController",
+                         "implementationMethod":  "dynamic",
+                         "implementationPath":  "/dynamic",
+                         "candidates":  [
+                                            {
+                                                "className":  "DynamicController",
+                                                "methodName":  "dynamic",
+                                                "httpMethod":  "GET",
+                                                "path":  "/dynamic",
+                                                "file":  "C:\\src\\DynamicController.java",
+                                                "lineStart":  14
+                                            }
+                                        ]
+                     },
+                     {
+                         "method":  "GET",
+                         "path":  "/private/docs",
+                         "status":  "MATCHED",
+                         "implementationClass":  "DocsController",
+                         "implementationMethod":  "docs",
+                         "implementationPath":  "/private/docs",
+                         "candidates":  [
+                                            {
+                                                "className":  "DocsController",
+                                                "methodName":  "docs",
+                                                "httpMethod":  "GET",
+                                                "path":  "/private/docs",
+                                                "file":  "C:\\src\\DocsController.java",
+                                                "lineStart":  8
+                                            }
+                                        ]
+                     }
+                 ]
+}

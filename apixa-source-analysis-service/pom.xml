@@ -27,4 +27,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <groupId>fr.inria.gforge.spoon</groupId>
 <artifactId>spoon-core</artifactId>
 </dependency></dependencies>
+<build>
+<plugins>
+<plugin>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-maven-plugin</artifactId>
+<configuration>
+<skip>false</skip>
+</configuration>
+</plugin>
+</plugins>
+</build>
 </project>

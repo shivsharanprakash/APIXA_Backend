@@ -1,0 +1,637 @@
+{
+  "benchmarkId": "step15-v1",
+  "description": "APIXA Step 15 controlled ground-truth suite. Every expected value is authored here, independently of APIXA output. No expected value is derived from the system under test.",
+  "cases": [
+    {
+      "caseId": "CONF-001",
+      "group": "CONFORMANCE",
+      "description": "Contract GET /admin/users requires ADMIN; implementation enforces ADMIN -> MATCH",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "roles": ["ADMIN"], "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MATCH" }
+    },
+    {
+      "caseId": "CONF-002",
+      "group": "CONFORMANCE",
+      "description": "ADMIN vs USER mismatch: contract requires ADMIN, implementation enforces USER -> MISMATCH",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "roles": ["USER"], "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MISMATCH" }
+    },
+    {
+      "caseId": "CONF-003",
+      "group": "CONFORMANCE",
+      "description": "Contract requires ADMIN, implementation only requires authentication -> PARTIAL",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/reports", "operationId": "reports",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/reports", "status": "MATCHED",
+            "implementationClass": "com.acme.ReportController", "implementationMethod": "list",
+            "implementationPath": "/reports" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "AUTHENTICATED", "className": "com.acme.ReportController",
+            "file": "ReportController.java", "lineStart": 12 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "PARTIAL" }
+    },
+    {
+      "caseId": "CONF-004",
+      "group": "CONFORMANCE",
+      "description": "Unresolved source security rule (dynamic matcher argument) cannot be flattened -> UNVERIFIED",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "SECURITY_CONFIGURATION", "operator": "HAS_ROLE", "unresolved": true,
+            "file": "SecurityConfig.java", "lineStart": 44 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CONF-005",
+      "group": "CONFORMANCE",
+      "description": "Multiple source candidates: ambiguity is never resolved into a security verdict -> UNVERIFIED",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MULTIPLE_CANDIDATES",
+            "candidates": [
+              { "className": "com.acme.AdminController", "methodName": "list", "httpMethod": "GET", "path": "/admin/users" },
+              { "className": "com.acme.AdminV2Controller", "methodName": "list", "httpMethod": "GET", "path": "/admin/users" }
+            ] }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "roles": ["USER"], "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "MULTIPLE_CANDIDATES", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CONF-006",
+      "group": "CONFORMANCE",
+      "description": "No source mapping: an absent implementation is never a MISMATCH -> UNVERIFIED",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/legacy", "operationId": "legacy",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/legacy", "status": "UNMATCHED" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "roles": ["ADMIN"], "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "UNMATCHED", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CONF-007",
+      "group": "CONFORMANCE",
+      "description": "Concrete path matcher /admin/** beats the anyRequest() catch-all; contract ADMIN -> MATCH",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "SECURITY_CONFIGURATION", "operator": "PERMIT_ALL", "pathPattern": "**", "catchAll": true,
+            "file": "SecurityConfig.java", "lineStart": 52 },
+          { "scope": "SECURITY_CONFIGURATION", "operator": "HAS_ROLE", "pathPattern": "/admin/**", "roles": ["ADMIN"],
+            "file": "SecurityConfig.java", "lineStart": 44 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MATCH" }
+    },
+    {
+      "caseId": "CONF-008",
+      "group": "CONFORMANCE",
+      "description": "Unresolved security: complex SpEL expression cannot be translated -> UNVERIFIED",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "complex": true, "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CONF-009",
+      "group": "CONFORMANCE",
+      "description": "Public endpoint: contract permits anonymous access and implementation is permitAll -> MATCH",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/public/health", "operationId": "health",
+            "expectedSecurity": { "authentication": "NONE", "permitAll": true, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/public/health", "status": "MATCHED",
+            "implementationClass": "com.acme.PublicController", "implementationMethod": "health",
+            "implementationPath": "/public/health" }
+        ],
+        "securityRules": [
+          { "scope": "SECURITY_CONFIGURATION", "operator": "PERMIT_ALL", "pathPattern": "/public/**",
+            "file": "SecurityConfig.java", "lineStart": 40 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MATCH" }
+    },
+    {
+      "caseId": "CONF-010",
+      "group": "CONFORMANCE",
+      "description": "Contract declares a public endpoint but the implementation requires ADMIN -> MISMATCH",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/public/health", "operationId": "health",
+            "expectedSecurity": { "authentication": "NONE", "permitAll": true, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/public/health", "status": "MATCHED",
+            "implementationClass": "com.acme.PublicController", "implementationMethod": "health",
+            "implementationPath": "/public/health" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.PublicController",
+            "roles": ["ADMIN"], "file": "PublicController.java", "lineStart": 9 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MISMATCH" }
+    },
+    {
+      "caseId": "CONF-011",
+      "group": "CONFORMANCE",
+      "description": "Contract declares no security requirement -> UNVERIFIED (never silently treated as public)",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/health", "operationId": "health",
+            "expectedSecurity": { "authentication": null, "permitAll": false, "unknown": true } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/health", "status": "MATCHED",
+            "implementationClass": "com.acme.PublicController", "implementationMethod": "health",
+            "implementationPath": "/health" }
+        ],
+        "securityRules": [
+          { "scope": "SECURITY_CONFIGURATION", "operator": "PERMIT_ALL", "pathPattern": "/**",
+            "file": "SecurityConfig.java", "lineStart": 52 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CONF-012",
+      "group": "CONFORMANCE",
+      "description": "Implementation enforces stricter authorization than the contract -> PARTIAL",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/reports", "operationId": "reports",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/reports", "status": "MATCHED",
+            "implementationClass": "com.acme.ReportController", "implementationMethod": "list",
+            "implementationPath": "/reports" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.ReportController",
+            "roles": ["ADMIN"], "file": "ReportController.java", "lineStart": 12 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "PARTIAL" }
+    },    {
+      "caseId": "MAP-001",
+      "group": "MAPPING",
+      "description": "Exact method+path correspondence -> MATCHED",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users", "operationId": "listUsers" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "list", "httpMethod": "GET", "path": "/users", "file": "UserController.java", "lineStart": 15 }
+        ]
+      },
+      "expected": { "status": "MATCHED", "candidateCount": 1 }
+    },
+    {
+      "caseId": "MAP-002",
+      "group": "MAPPING",
+      "description": "Path-variable rename: /users/{id} and /users/{userId} are one logical endpoint -> MATCHED",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users/{id}", "operationId": "getUser" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "get", "httpMethod": "GET", "path": "/users/{userId}", "file": "UserController.java", "lineStart": 22 }
+        ]
+      },
+      "expected": { "status": "MATCHED", "candidateCount": 1 }
+    },
+    {
+      "caseId": "MAP-003",
+      "group": "MAPPING",
+      "description": "Static segment never matches a path variable -> UNMATCHED",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users/all", "operationId": "allUsers" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "get", "httpMethod": "GET", "path": "/users/{id}", "file": "UserController.java", "lineStart": 22 }
+        ]
+      },
+      "expected": { "status": "UNMATCHED", "candidateCount": 0 }
+    },
+    {
+      "caseId": "MAP-004",
+      "group": "MAPPING",
+      "description": "HTTP method is part of endpoint identity -> UNMATCHED",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users", "operationId": "listUsers" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "create", "httpMethod": "POST", "path": "/users", "file": "UserController.java", "lineStart": 30 }
+        ]
+      },
+      "expected": { "status": "UNMATCHED", "candidateCount": 0 }
+    },
+    {
+      "caseId": "MAP-005",
+      "group": "MAPPING",
+      "description": "Two equally valid candidates: ambiguity stays explicit -> MULTIPLE_CANDIDATES",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users", "operationId": "listUsers" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "list", "httpMethod": "GET", "path": "/users", "file": "UserController.java", "lineStart": 15 },
+          { "className": "com.acme.UserV2Controller", "methodName": "list", "httpMethod": "GET", "path": "/users", "file": "UserV2Controller.java", "lineStart": 11 }
+        ]
+      },
+      "expected": { "status": "MULTIPLE_CANDIDATES", "candidateCount": 2 }
+    },
+    {
+      "caseId": "MAP-006",
+      "group": "MAPPING",
+      "description": "Correspondence proven only through a trailing ** wildcard cannot be proven exactly -> UNCERTAIN",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users/all", "operationId": "allUsers" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "all", "httpMethod": "GET", "path": "/users/**", "file": "UserController.java", "lineStart": 40 }
+        ]
+      },
+      "expected": { "status": "UNCERTAIN", "candidateCount": 1 }
+    },
+    {
+      "caseId": "MAP-007",
+      "group": "MAPPING",
+      "description": "Different segment counts cannot correspond -> UNMATCHED",
+      "input": {
+        "contractId": "benchmark-contract", "analysisId": "benchmark-analysis",
+        "contractEndpoints": [ { "method": "GET", "path": "/users/{id}/profile", "operationId": "profile" } ],
+        "implementationEndpoints": [
+          { "className": "com.acme.UserController", "methodName": "get", "httpMethod": "GET", "path": "/users/{id}", "file": "UserController.java", "lineStart": 22 }
+        ]
+      },
+      "expected": { "status": "UNMATCHED", "candidateCount": 0 }
+    },
+    {
+      "caseId": "IMP-001",
+      "group": "IMPACT",
+      "description": "Endpoint present in V2 only -> ADDED_ENDPOINT",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ { "method": "GET", "path": "/users", "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [
+          { "method": "GET", "path": "/users", "conformanceStatus": "MATCH" },
+          { "method": "GET", "path": "/users/{id}", "conformanceStatus": "MATCH" }
+        ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["ADDED_ENDPOINT"] }
+    },
+    {
+      "caseId": "IMP-002",
+      "group": "IMPACT",
+      "description": "Endpoint present in V1 only -> REMOVED_ENDPOINT",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [
+          { "method": "GET", "path": "/users", "conformanceStatus": "MATCH" },
+          { "method": "GET", "path": "/legacy", "conformanceStatus": "MATCH" }
+        ] },
+        "v2": { "versionId": "V2", "endpoints": [ { "method": "GET", "path": "/users", "conformanceStatus": "MATCH" } ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["REMOVED_ENDPOINT"] }
+    },
+    {
+      "caseId": "IMP-003",
+      "group": "IMPACT",
+      "description": "ADMIN -> USER in the implemented security policy -> SECURITY_CHANGED",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ {
+          "method": "GET", "path": "/admin/users",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ {
+          "method": "GET", "path": "/admin/users",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "roles": ["USER"], "permitAll": false, "unknown": false },
+          "conformanceStatus": "MISMATCH" } ] }
+      },
+      "expected": { "impactCount": 2, "categories": ["SECURITY_CHANGED", "CONFORMANCE_CHANGED"] }
+    },
+    {
+      "caseId": "IMP-004",
+      "group": "IMPACT",
+      "description": "Only the supplied conformance status changed -> CONFORMANCE_CHANGED",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ {
+          "method": "GET", "path": "/reports",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ {
+          "method": "GET", "path": "/reports",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false },
+          "conformanceStatus": "PARTIAL" } ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["CONFORMANCE_CHANGED"] }
+    },
+    {
+      "caseId": "IMP-005",
+      "group": "IMPACT",
+      "description": "Runtime observation 200 -> 401 is an observational difference only",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ { "method": "GET", "path": "/admin/users", "conformanceStatus": "MATCH" } ],
+                "runtimeObservations": [ { "method": "GET", "path": "/admin/users", "observedStatusCode": 200 } ] },
+        "v2": { "versionId": "V2", "endpoints": [ { "method": "GET", "path": "/admin/users", "conformanceStatus": "MATCH" } ],
+                "runtimeObservations": [ { "method": "GET", "path": "/admin/users", "observedStatusCode": 401 } ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["RUNTIME_OBSERVATION_CHANGED"] }
+    },
+    {
+      "caseId": "IMP-006",
+      "group": "IMPACT",
+      "description": "Identical V1/V2 data -> no impact at all",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ {
+          "method": "GET", "path": "/users",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH", "evidenceCodes": ["EV-V1"] } ] },
+        "v2": { "versionId": "V2", "endpoints": [ {
+          "method": "GET", "path": "/users",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "implementedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH", "evidenceCodes": ["EV-V1"] } ] }
+      },
+      "expected": { "impactCount": 0, "categories": [] }
+    },
+    {
+      "caseId": "IMP-007",
+      "group": "IMPACT",
+      "description": "Path-variable rename is not an add+remove pair",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ { "method": "GET", "path": "/users/{id}", "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ { "method": "GET", "path": "/users/{userId}", "conformanceStatus": "MATCH" } ] }
+      },
+      "expected": { "impactCount": 0, "categories": [] }
+    },
+    {
+      "caseId": "IMP-008",
+      "group": "IMPACT",
+      "description": "HTTP method change is a removal plus an addition; Step 14 orders records by path then method, so the GET removal is listed first",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ { "method": "GET", "path": "/users", "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ { "method": "POST", "path": "/users", "conformanceStatus": "MATCH" } ] }
+      },
+      "expected": { "impactCount": 2, "categories": ["REMOVED_ENDPOINT", "ADDED_ENDPOINT"] }
+    },
+    {
+      "caseId": "IMP-009",
+      "group": "IMPACT",
+      "description": "Contract security policy change AUTHENTICATED -> ADMIN -> SECURITY_CHANGED",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ {
+          "method": "GET", "path": "/reports",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ {
+          "method": "GET", "path": "/reports",
+          "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false },
+          "conformanceStatus": "MATCH" } ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["SECURITY_CHANGED"] }
+    },    {
+      "caseId": "IMP-010",
+      "group": "IMPACT",
+      "description": "Security data availability change: UNKNOWN -> NOT_PROVIDED is an information difference, not a proven policy change",
+      "input": {
+        "v1": { "versionId": "V1", "endpoints": [ {
+          "method": "GET", "path": "/admin/users",
+          "expectedSecurity": { "authentication": null, "permitAll": false, "unknown": true },
+          "conformanceStatus": "UNVERIFIED" } ] },
+        "v2": { "versionId": "V2", "endpoints": [ {
+          "method": "GET", "path": "/admin/users",
+          "conformanceStatus": "UNVERIFIED" } ] }
+      },
+      "expected": { "impactCount": 1, "categories": ["SECURITY_INFORMATION_CHANGED"] }
+    },
+    {
+      "caseId": "RUN-001",
+      "group": "RUNTIME",
+      "description": "Public endpoint requested anonymously -> 200",
+      "note": "Requires the local Step 13 sample target on http://localhost:9090; the case is SKIPPED when it is not running.",
+      "input": { "targetBaseUrl": "http://localhost:9090", "path": "/public/health", "method": "GET" },
+      "expected": { "status": "COMPLETED", "observedStatusCode": 200 }
+    },
+    {
+      "caseId": "RUN-002",
+      "group": "RUNTIME",
+      "description": "Anonymous request to a protected admin endpoint -> 401",
+      "note": "Requires the local Step 13 sample target on http://localhost:9090.",
+      "input": { "targetBaseUrl": "http://localhost:9090", "path": "/admin/users", "method": "GET" },
+      "expected": { "status": "COMPLETED", "observedStatusCode": 401 }
+    },
+    {
+      "caseId": "RUN-003",
+      "group": "RUNTIME",
+      "description": "Authenticated non-admin user -> 403",
+      "note": "Requires the local Step 13 sample target on http://localhost:9090.",
+      "input": { "targetBaseUrl": "http://localhost:9090", "path": "/admin/users", "method": "GET",
+                 "headers": { "Authorization": "Basic dXNlcjp1c2VyMTIz" } },
+      "expected": { "status": "COMPLETED", "observedStatusCode": 403 }
+    },
+    {
+      "caseId": "RUN-004",
+      "group": "RUNTIME",
+      "description": "Authenticated admin user -> 200",
+      "note": "Requires the local Step 13 sample target on http://localhost:9090.",
+      "input": { "targetBaseUrl": "http://localhost:9090", "path": "/admin/users", "method": "GET",
+                 "headers": { "Authorization": "Basic YWRtaW46YWRtaW4xMjM=" } },
+      "expected": { "status": "COMPLETED", "observedStatusCode": 200 }
+    },
+    {
+      "caseId": "RUN-005",
+      "group": "RUNTIME",
+      "description": "Unknown endpoint -> 404",
+      "note": "Requires the local Step 13 sample target on http://localhost:9090.",
+      "input": { "targetBaseUrl": "http://localhost:9090", "path": "/does-not-exist", "method": "GET" },
+      "expected": { "status": "COMPLETED", "observedStatusCode": 404 }
+    },
+    {
+      "caseId": "RUN-006",
+      "group": "RUNTIME",
+      "description": "Unreachable local port -> connection failure is detected and reported as FAILED",
+      "note": "Uses a local unused port; no external host is contacted.",
+      "input": { "targetBaseUrl": "http://localhost:9", "path": "/", "method": "GET", "timeoutMs": 800 },
+      "expected": { "status": "FAILED", "errorType": "CONNECTION_FAILURE" }
+    },
+    {
+      "caseId": "RUN-007",
+      "group": "RUNTIME",
+      "description": "Blackhole address with a bounded timeout -> timeout is detected and reported as TIMEOUT",
+      "note": "RFC 1918-style non-routable address; the request is bounded by timeoutMs.",
+      "input": { "targetBaseUrl": "http://10.255.255.1", "path": "/", "method": "GET", "timeoutMs": 800 },
+      "expected": { "status": "TIMEOUT", "errorType": "TIMEOUT" }
+    },
+    {
+      "caseId": "MUT-001",
+      "group": "MUTATION",
+      "description": "Mutate ADMIN -> USER in the source rule: the required effect is a MISMATCH verdict",
+      "baseCaseId": "CONF-001",
+      "input": { "op": "SET_ROLES", "path": "/securityRules/0/roles", "roles": ["USER"] },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MISMATCH" }
+    },
+    {
+      "caseId": "MUT-002",
+      "group": "MUTATION",
+      "description": "Mutate the source rule to permitAll (anonymous access): the required effect is a MISMATCH against an ADMIN contract",
+      "baseCaseId": "CONF-001",
+      "input": { "op": "SET_OPERATOR", "path": "/securityRules/0", "value": "PERMIT_ALL" },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MISMATCH" }
+    },
+    {
+      "caseId": "MUT-003",
+      "group": "MUTATION",
+      "description": "Mutate the implemented policy from authenticated USER to public: the required effect is a SECURITY_CHANGED record (the conformance status difference declared by the base case is reported independently)",
+      "baseCaseId": "IMP-003",
+      "input": { "op": "SET_AUTHENTICATION", "path": "/v2/endpoints/0/implementedSecurity", "value": "NONE" },
+      "expected": { "impactCount": 2, "categories": ["SECURITY_CHANGED", "CONFORMANCE_CHANGED"] }
+    },
+    {
+      "caseId": "MUT-004",
+      "group": "MUTATION",
+      "description": "Add a role to the implemented policy: the required effect is still the two records IMP-003 already declares",
+      "baseCaseId": "IMP-003",
+      "input": { "op": "SET_ROLES", "path": "/v2/endpoints/0/implementedSecurity/roles", "roles": ["USER", "AUDITOR"] },
+      "expected": { "impactCount": 2, "categories": ["SECURITY_CHANGED", "CONFORMANCE_CHANGED"] }
+    },
+    {
+      "caseId": "MUT-005",
+      "group": "MUTATION",
+      "description": "Remove the added endpoint from V2: the required effect is no ADDED_ENDPOINT record",
+      "baseCaseId": "IMP-001",
+      "input": { "op": "REMOVE_ENDPOINT", "version": "v2", "index": 1 },
+      "expected": { "impactCount": 0, "categories": [] }
+    },
+    {
+      "caseId": "MUT-006",
+      "group": "MUTATION",
+      "description": "Add an endpoint to V2: the required effect is an ADDED_ENDPOINT record",
+      "baseCaseId": "IMP-006",
+      "input": { "op": "ADD_ENDPOINT", "version": "v2",
+                 "endpoint": { "method": "POST", "path": "/users", "conformanceStatus": "MATCH" } },
+      "expected": { "impactCount": 1, "categories": ["ADDED_ENDPOINT"] }
+    },
+    {
+      "caseId": "MUT-007",
+      "group": "MUTATION",
+      "description": "Change the supplied conformance status: the required effect is a CONFORMANCE_CHANGED record",
+      "baseCaseId": "IMP-006",
+      "input": { "op": "SET_CONFORMANCE_STATUS", "path": "/v2/endpoints/0", "value": "MISMATCH" },
+      "expected": { "impactCount": 1, "categories": ["CONFORMANCE_CHANGED"] }
+    },
+    {
+      "caseId": "MUT-008",
+      "group": "MUTATION",
+      "description": "Change the source rule operator to DENY_ALL, which cannot be translated into a policy: the required effect is UNVERIFIED",
+      "baseCaseId": "CONF-001",
+      "input": { "op": "SET_OPERATOR", "path": "/securityRules/0", "value": "DENY_ALL" },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "UNVERIFIED" }
+    },
+    {
+      "caseId": "CTRL-001",
+      "group": "CONFORMANCE",
+      "description": "NEGATIVE CONTROL: the ground truth deliberately contradicts the correct answer. This case MUST fail; it proves the benchmark detects incorrect output and that no analyzer was adjusted to make cases pass.",
+      "input": {
+        "contractEndpoints": [
+          { "method": "GET", "path": "/admin/users", "operationId": "listAdmins",
+            "expectedSecurity": { "authentication": "AUTHENTICATED", "roles": ["ADMIN"], "permitAll": false, "unknown": false } }
+        ],
+        "mappings": [
+          { "method": "GET", "path": "/admin/users", "status": "MATCHED",
+            "implementationClass": "com.acme.AdminController", "implementationMethod": "list",
+            "implementationPath": "/admin/users" }
+        ],
+        "securityRules": [
+          { "scope": "CLASS", "operator": "HAS_ROLE", "className": "com.acme.AdminController",
+            "roles": ["ADMIN"], "file": "AdminController.java", "lineStart": 20 }
+        ]
+      },
+      "expected": { "mappingStatus": "MATCHED", "conformanceStatus": "MISMATCH" }
+    }
+  ]
+}

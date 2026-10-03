@@ -1,4 +1,4 @@
-﻿package com.apixa.sourceanalysis.service;
+package com.apixa.sourceanalysis.service;
 
 import com.apixa.common.error.ApiException;
 import com.apixa.sourceanalysis.engine.SpringSourceAnalyzer;
@@ -31,6 +31,34 @@ public class SourceAnalysisService {
         return result;
     }
 
+    public SourceAnalysisResultDto analyzeEndpoints(String projectPath) {
+        requireDirectory(projectPath);
+        try {
+            SourceAnalysisResultDto result = analyzer.analyzeEndpoints(projectPath);
+            results.put(resultId(result), result);
+            return result;
+        } catch (SpringSourceAnalyzer.SourceParseException | IllegalArgumentException e) {
+            // bad path or malformed Java source: controlled 4xx, never a parser stack trace
+            throw ApiException.badRequest(e.getMessage());
+        }
+    }
+
+    /**
+     * Step 9 source security analysis ({@code analysisType = SECURITY}): the security rules actually
+     * declared by the project's Spring source. Security discovery only — no endpoint mapping, no
+     * OpenAPI comparison, no conformance verdict.
+     */
+    public SourceAnalysisResultDto analyzeSecurity(String projectPath) {
+        requireDirectory(projectPath);
+        try {
+            SourceAnalysisResultDto result = analyzer.analyzeSecurity(projectPath);
+            results.put(resultId(result), result);
+            return result;
+        } catch (SpringSourceAnalyzer.SourceParseException | IllegalArgumentException e) {
+            throw ApiException.badRequest(e.getMessage());
+        }
+    }
+
     public Map<String, SourceAnalysisResultDto> all() { return new ConcurrentHashMap<>(results); }
 
     public SourceAnalysisResultDto get(String id) {
@@ -41,5 +69,14 @@ public class SourceAnalysisService {
 
     private String resultId(SourceAnalysisResultDto result) {
         return "SRC-" + Integer.toHexString(result.projectPath().hashCode());
+    }
+
+    private void requireDirectory(String projectPath) {
+        if (projectPath == null || projectPath.isBlank()) {
+            throw ApiException.badRequest("projectPath is required");
+        }
+        if (!Files.isDirectory(Path.of(projectPath))) {
+            throw ApiException.badRequest("Source path is not a directory: " + projectPath);
+        }
     }
 }

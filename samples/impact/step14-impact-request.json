@@ -1,0 +1,290 @@
+{
+    "v1":  {
+               "projectId":  "P-1",
+               "versionId":  "V1",
+               "analysisRunId":  10,
+               "contractId":  "C-V1",
+               "endpoints":  [
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/admin/users",
+                                     "operationId":  "listAdmins",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "roles":  [
+                                                                            "ADMIN"
+                                                                        ],
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "roles":  [
+                                                                               "ADMIN"
+                                                                           ],
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V1-CONFORMANCE-ADMIN-USERS"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/reports",
+                                     "operationId":  "reports",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V1-CONFORMANCE-REPORTS"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/users/{id}",
+                                     "operationId":  "getUser",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "NONE",
+                                                              "permitAll":  true,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "NONE",
+                                                                 "permitAll":  true,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V1-CONFORMANCE-USER-ID"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/legacy",
+                                     "operationId":  "legacy",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "NONE",
+                                                              "permitAll":  true,
+                                                              "unknown":  false
+                                                          },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH"
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/unchanged",
+                                     "operationId":  "unchanged",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "roles":  [
+                                                                            "USER"
+                                                                        ],
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "roles":  [
+                                                                               "USER"
+                                                                           ],
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH"
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/users",
+                                     "operationId":  "listUsers",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "NONE",
+                                                              "permitAll":  true,
+                                                              "unknown":  false
+                                                          },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH"
+                                 }
+                             ],
+               "securityRules":  [
+                                     {
+                                         "scope":  "SECURITY_CONFIGURATION",
+                                         "operator":  "HAS_ROLE",
+                                         "pathPattern":  "/admin/**",
+                                         "policy":  {
+                                                        "authentication":  "AUTHENTICATED",
+                                                        "roles":  [
+                                                                      "ADMIN"
+                                                                  ],
+                                                        "permitAll":  false,
+                                                        "unknown":  false
+                                                    },
+                                         "evidenceCodes":  [
+                                                               "EV-V1-SOURCE-SECURITY-ADMIN"
+                                                           ]
+                                     }
+                                 ],
+               "runtimeObservations":  [
+                                           {
+                                               "method":  "GET",
+                                               "path":  "/admin/users",
+                                               "observedStatusCode":  200,
+                                               "verificationId":  "rt-v1-admin"
+                                           }
+                                       ]
+           },
+    "v2":  {
+               "projectId":  "P-1",
+               "versionId":  "V2",
+               "analysisRunId":  11,
+               "contractId":  "C-V2",
+               "endpoints":  [
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/admin/users",
+                                     "operationId":  "listAdmins",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "roles":  [
+                                                                            "ADMIN"
+                                                                        ],
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "roles":  [
+                                                                               "USER"
+                                                                           ],
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MISMATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V2-CONFORMANCE-ADMIN-USERS"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/reports",
+                                     "operationId":  "reports",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "roles":  [
+                                                                            "ADMIN"
+                                                                        ],
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "roles":  [
+                                                                               "ADMIN"
+                                                                           ],
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V2-CONFORMANCE-REPORTS"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/users/{userId}",
+                                     "operationId":  "getUser",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "NONE",
+                                                              "permitAll":  true,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "NONE",
+                                                                 "permitAll":  true,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH",
+                                     "evidenceCodes":  [
+                                                           "EV-V2-CONFORMANCE-USER-ID"
+                                                       ]
+                                 },
+                                 {
+                                     "method":  "GET",
+                                     "path":  "/unchanged",
+                                     "operationId":  "unchanged",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "AUTHENTICATED",
+                                                              "roles":  [
+                                                                            "USER"
+                                                                        ],
+                                                              "permitAll":  false,
+                                                              "unknown":  false
+                                                          },
+                                     "implementedSecurity":  {
+                                                                 "authentication":  "AUTHENTICATED",
+                                                                 "roles":  [
+                                                                               "USER"
+                                                                           ],
+                                                                 "permitAll":  false,
+                                                                 "unknown":  false
+                                                             },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH"
+                                 },
+                                 {
+                                     "method":  "POST",
+                                     "path":  "/users",
+                                     "operationId":  "createUser",
+                                     "expectedSecurity":  {
+                                                              "authentication":  "NONE",
+                                                              "permitAll":  true,
+                                                              "unknown":  false
+                                                          },
+                                     "mappingStatus":  "MATCHED",
+                                     "conformanceStatus":  "MATCH"
+                                 }
+                             ],
+               "securityRules":  [
+                                     {
+                                         "scope":  "SECURITY_CONFIGURATION",
+                                         "operator":  "HAS_ROLE",
+                                         "pathPattern":  "/admin/**",
+                                         "policy":  {
+                                                        "authentication":  "AUTHENTICATED",
+                                                        "roles":  [
+                                                                      "USER"
+                                                                  ],
+                                                        "permitAll":  false,
+                                                        "unknown":  false
+                                                    },
+                                         "evidenceCodes":  [
+                                                               "EV-V2-SOURCE-SECURITY-ADMIN"
+                                                           ]
+                                     }
+                                 ],
+               "runtimeObservations":  [
+                                           {
+                                               "method":  "GET",
+                                               "path":  "/admin/users",
+                                               "observedStatusCode":  401,
+                                               "verificationId":  "rt-v2-admin"
+                                           }
+                                       ]
+           }
+}

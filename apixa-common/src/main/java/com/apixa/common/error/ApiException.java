@@ -1,4 +1,4 @@
-﻿package com.apixa.common.error;
+package com.apixa.common.error;
 
 public class ApiException extends RuntimeException {
     private final int status;

@@ -1,4 +1,4 @@
-﻿package com.apixa.common.error;
+package com.apixa.common.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

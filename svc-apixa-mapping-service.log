@@ -1,0 +1,52 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-02T20:30:26.384+05:30  INFO 3744 --- [apixa-mapping-service] [           main] c.a.mapping.MappingServiceApplication    : Starting MappingServiceApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 3744 (C:\Codes\APIXA\security-contract-analyzer\apixa-mapping-service\target\apixa-mapping-service-0.0.1-SNAPSHOT.jar started by shivs in C:\Codes\APIXA\security-contract-analyzer\apixa-mapping-service)
+2026-10-02T20:30:26.406+05:30  INFO 3744 --- [apixa-mapping-service] [           main] c.a.mapping.MappingServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-10-02T20:30:33.143+05:30  INFO 3744 --- [apixa-mapping-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-02T20:30:33.359+05:30  INFO 3744 --- [apixa-mapping-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 0 JPA repository interfaces.
+2026-10-02T20:30:43.723+05:30  INFO 3744 --- [apixa-mapping-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8084 (http)
+2026-10-02T20:30:43.816+05:30  INFO 3744 --- [apixa-mapping-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-02T20:30:43.818+05:30  INFO 3744 --- [apixa-mapping-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-02T20:30:43.989+05:30  INFO 3744 --- [apixa-mapping-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 17012 ms
+2026-10-02T20:30:45.711+05:30  INFO 3744 --- [apixa-mapping-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-02T20:30:46.385+05:30  INFO 3744 --- [apixa-mapping-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-02T20:30:50.467+05:30  INFO 3744 --- [apixa-mapping-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-02T20:30:50.741+05:30  INFO 3744 --- [apixa-mapping-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-02T20:30:51.726+05:30  INFO 3744 --- [apixa-mapping-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@2d5ae78e
+2026-10-02T20:30:51.740+05:30  INFO 3744 --- [apixa-mapping-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-02T20:30:52.061+05:30  INFO 3744 --- [apixa-mapping-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlite:./data/mapping.db]
+	Database driver: SQLite JDBC
+	Database dialect: SQLiteDialect
+	Database version: 3.50.3
+	Default catalog/schema: undefined/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: SERIALIZABLE [default SERIALIZABLE]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-02T20:30:53.842+05:30  INFO 3744 --- [apixa-mapping-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-02T20:30:54.035+05:30  INFO 3744 --- [apixa-mapping-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-02T20:30:56.379+05:30  INFO 3744 --- [apixa-mapping-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8084 (http) with context path '/'
+2026-10-02T20:30:56.467+05:30  INFO 3744 --- [apixa-mapping-service] [           main] c.a.mapping.MappingServiceApplication    : Started MappingServiceApplication in 38.501 seconds (process running for 41.994)
+2026-10-02T20:39:56.943+05:30  INFO 3744 --- [apixa-mapping-service] [omcat-handler-0] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-02T20:39:56.967+05:30  INFO 3744 --- [apixa-mapping-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-02T20:39:57.104+05:30  INFO 3744 --- [apixa-mapping-service] [omcat-handler-0] o.s.web.servlet.DispatcherServlet        : Completed initialization in 134 ms
+2026-10-02T20:39:58.088+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: MapRequest#contractEndpoints()
+2026-10-02T20:39:58.111+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: MapRequest#com.apixa.mapping.controller.MappingController$MapRequest(String, String, List, List)
+2026-10-02T20:39:58.113+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: MapRequest#com.apixa.mapping.controller.MappingController$MapRequest(String, String, List, List)
+2026-10-02T20:39:58.116+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: MapRequest#implementationEndpoints()
+2026-10-02T20:39:58.124+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: implementationEndpoints
+2026-10-02T20:39:58.129+05:30  WARN 3744 --- [apixa-mapping-service] [omcat-handler-0] o.h.v.i.m.a.CascadingMetaDataBuilder     : HV000271: Using `@Valid` on a container (java.util.List) is deprecated. You should apply the annotation on the type argument(s). Affected element: contractEndpoints
+2026-10-02T20:59:27.161+05:30  WARN 3744 --- [apixa-mapping-service] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m55s231ms130µs600ns).
+2026-10-02T21:23:35.285+05:30  WARN 3744 --- [apixa-mapping-service] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=24m8s155ms304µs600ns).
+2026-10-02T22:51:53.714+05:30  WARN 3744 --- [apixa-mapping-service] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h28m20s55ms465µs500ns).

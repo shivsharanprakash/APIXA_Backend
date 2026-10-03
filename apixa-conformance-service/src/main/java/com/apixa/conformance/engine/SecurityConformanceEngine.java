@@ -1,4 +1,4 @@
-﻿package com.apixa.conformance.engine;
+package com.apixa.conformance.engine;
 
 import com.apixa.common.model.SecurityPolicy;
 import org.springframework.stereotype.Component;

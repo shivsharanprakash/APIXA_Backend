@@ -1,4 +1,4 @@
-﻿package com.apixa.common.web;
+package com.apixa.common.web;
 
 import com.apixa.common.trace.TraceContext;
 import jakarta.servlet.*;

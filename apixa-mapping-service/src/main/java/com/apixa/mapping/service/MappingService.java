@@ -1,4 +1,4 @@
-﻿package com.apixa.mapping.service;
+package com.apixa.mapping.service;
 
 import com.apixa.common.error.ApiException;
 import com.apixa.mapping.engine.EndpointMapper;
@@ -6,10 +6,19 @@ import com.apixa.mapping.model.MappingResultDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Step 10 endpoint mapping: maps already extracted datasets onto each other.
+ *
+ * <p>Inputs are the Step 7 contract endpoints and the Step 8 source endpoints, supplied by the
+ * caller. The service never reads a local source path, never analyzes Java and never calls the
+ * contract or source analysis service, so the pipeline separation
+ * (Step 7 / Step 8 → Step 10 → Step 11) is preserved.
+ */
 @Service
 public class MappingService {
 
@@ -21,11 +30,23 @@ public class MappingService {
     public List<MappingResultDto> map(String contractId, String analysisId,
                                       List<MappingRequestEndpoint> contractEndpoints,
                                       List<EndpointMapper.ImplEndpoint> implEndpoints) {
+        if (contractEndpoints == null || contractEndpoints.isEmpty()) {
+            throw ApiException.badRequest("contractEndpoints is required and must not be empty");
+        }
+        if (implEndpoints == null || implEndpoints.isEmpty()) {
+            throw ApiException.badRequest("implementationEndpoints is required and must not be empty");
+        }
+        // Deterministic output: the request order never leaks into the response.
+        List<MappingRequestEndpoint> orderedContracts = contractEndpoints.stream()
+                .sorted(Comparator.comparing(MappingRequestEndpoint::path, Comparator.nullsFirst(String::compareTo))
+                        .thenComparing(MappingRequestEndpoint::method, Comparator.nullsFirst(String::compareTo)))
+                .toList();
+
         List<MappingResultDto> out = new ArrayList<>();
-        for (MappingRequestEndpoint ce : contractEndpoints) {
+        for (MappingRequestEndpoint ce : orderedContracts) {
             out.add(mapper.match(ce.method(), ce.path(), ce.operationId(), implEndpoints));
         }
-        results.put(batchId(contractId, analysisId), out);
+        results.put(batchId(contractId, analysisId), List.copyOf(out));
         return out;
     }
 

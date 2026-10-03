@@ -1,4 +1,4 @@
-﻿package com.apixa.contract.model;
+package com.apixa.contract.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
