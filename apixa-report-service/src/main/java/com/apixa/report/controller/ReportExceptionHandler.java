@@ -19,7 +19,7 @@ public class ReportExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorBody> unreadable(HttpMessageNotReadableException ex, HttpServletRequest req) {
         return ResponseEntity.badRequest().body(new ErrorBody(400, "Bad Request",
-                "Malformed report request body", req.getRequestURI(), System.currentTimeMillis()));
+                "Malformed report request body: " + (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage()), req.getRequestURI(), System.currentTimeMillis()));
     }
 
     @ExceptionHandler(IllegalStateException.class)

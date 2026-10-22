@@ -279,6 +279,15 @@ public class SpringSourceAnalyzer {
         }
         // Mixed literal + non-literal (constant reference, concatenation): keep literals, flag unresolved.
         String expression = literals.get(0);
+        String trimmed = expression.trim();
+        if (trimmed.matches("^(authenticated|isAuthenticated|isFullyAuthenticated|permitAll|anonymous|isAnonymous|denyAll)(\\s*\\(\\s*\\))?$")) {
+            String call = trimmed.replaceAll("\\s*\\(\\s*\\)", "").trim();
+            ParsedCall parsed = toRule(call, List.of());
+            return List.of(new SecurityEvidenceDto(file, line, line, parsed.ruleType(), null,
+                    parsed.roles(), parsed.authorities(), null, snippetOf(expression, 200),
+                    scope, parsed.operator(), expression, className, methodName,
+                    false, !unres.isEmpty(), null));
+        }
         Matcher calls = SPEL_CALL.matcher(expression);
         List<int[]> spans = new ArrayList<>();
         while (calls.find()) spans.add(new int[]{calls.start(), calls.end()});

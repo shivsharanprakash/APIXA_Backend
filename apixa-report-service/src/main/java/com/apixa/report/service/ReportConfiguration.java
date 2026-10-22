@@ -1,5 +1,6 @@
 package com.apixa.report.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,8 @@ public class ReportConfiguration {
     /** Serializes the canonical report document to the JSON artifact. */
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     }
 }
