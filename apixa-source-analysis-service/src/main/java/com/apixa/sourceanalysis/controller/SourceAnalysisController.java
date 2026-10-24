@@ -19,7 +19,7 @@ public class SourceAnalysisController {
     public SourceAnalysisController(SourceAnalysisService service) { this.service = service; }
 
     @PostMapping("/analyze")
-    public SourceAnalysisResultDto analyze(@Valid @RequestBody AnalyzeRequest request) {
+    public SourceAnalysisResultDto analyze(@RequestBody AnalyzeRequest request) {
         return service.analyze(request.projectPath());
     }
 
@@ -28,7 +28,7 @@ public class SourceAnalysisController {
      * supplied local project directory. Discovery only — no security, no OpenAPI comparison.
      */
     @PostMapping("/analyze/endpoints")
-    public SourceAnalysisResultDto analyzeEndpoints(@Valid @RequestBody AnalyzeRequest request) {
+    public SourceAnalysisResultDto analyzeEndpoints(@RequestBody AnalyzeRequest request) {
         return service.analyzeEndpoints(request.projectPath());
     }
 
@@ -38,7 +38,7 @@ public class SourceAnalysisController {
      * never mapped to endpoint paths (Step 10). Same request body as the other passes.
      */
     @PostMapping("/analyze/security")
-    public SourceAnalysisResultDto analyzeSecurity(@Valid @RequestBody AnalyzeRequest request) {
+    public SourceAnalysisResultDto analyzeSecurity(@RequestBody AnalyzeRequest request) {
         return service.analyzeSecurity(request.projectPath());
     }
 

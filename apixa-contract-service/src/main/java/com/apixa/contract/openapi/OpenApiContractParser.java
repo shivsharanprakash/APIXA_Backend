@@ -188,7 +188,7 @@ public class OpenApiContractParser {
             List<SecurityRequirement> requirements = operation.getSecurity() != null
                     ? operation.getSecurity()
                     : api.getSecurity();
-            SecurityPolicy policy = normalize(requirements, schemes);
+            SecurityPolicy policy = normalize(requirements, schemes, operation);
             String jsonPath = "$.paths['" + path + "']." + method.toLowerCase(Locale.ROOT)
                     + (operation.getSecurity() != null ? ".security" : " (global security)");
             endpoints.add(new ContractEndpointDto(method, path, operation.getOperationId(), policy,
@@ -397,6 +397,12 @@ public class OpenApiContractParser {
     /** Normalize OpenAPI security requirements into the shared SecurityPolicy model. */
     private SecurityPolicy normalize(List<SecurityRequirement> requirements,
                                      Map<String, SecurityScheme> schemes) {
+        return normalize(requirements, schemes, null);
+    }
+
+    private SecurityPolicy normalize(List<SecurityRequirement> requirements,
+                                     Map<String, SecurityScheme> schemes,
+                                     Operation operation) {
         if (requirements == null) {
             // no global and no operation-level security: open endpoint
             return SecurityPolicy.permitAllPolicy();
@@ -426,6 +432,19 @@ public class OpenApiContractParser {
                     }
                 }
                 roles.addAll(entry.getValue());
+            }
+        }
+        if (roles.isEmpty() && operation != null && operation.getExtensions() != null) {
+            Object ext = operation.getExtensions().get("x-required-roles");
+            if (ext == null) ext = operation.getExtensions().get("x-roles");
+            if (ext instanceof Collection<?> col) {
+                for (Object o : col) {
+                    if (o != null && !String.valueOf(o).isBlank()) roles.add(String.valueOf(o).trim());
+                }
+            } else if (ext instanceof String str) {
+                for (String part : str.split(",")) {
+                    if (!part.isBlank()) roles.add(part.trim());
+                }
             }
         }
         if (roles.isEmpty() && scopes.isEmpty()) {
