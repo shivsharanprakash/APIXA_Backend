@@ -1,5 +1,7 @@
 package com.apixa.conformance.investigation.engine;
 
+import com.apixa.conformance.investigation.llm.OpenRouterClient;
+import com.apixa.conformance.investigation.llm.OpenRouterClient.LlmInvestigationResponse;
 import com.apixa.conformance.investigation.model.*;
 import com.apixa.conformance.investigation.tools.InvestigationToolRegistry;
 import com.apixa.conformance.investigation.tools.InvestigationToolRegistry.*;
@@ -14,16 +16,19 @@ import java.util.*;
 
 /**
  * Autonomous Investigation Engine for API Security Contract Violations.
- * Implements evidence-grounded, tool-constrained multi-step investigation loops.
+ * Implements evidence-grounded, tool-constrained multi-step investigation loops
+ * with pluggable OpenRouter AI reasoning and deterministic fallback.
  */
 @Component
 public class InvestigationEngine {
 
     private final InvestigationToolRegistry tools;
+    private final OpenRouterClient openRouterClient;
     private final HttpClient httpClient;
 
-    public InvestigationEngine(InvestigationToolRegistry tools) {
+    public InvestigationEngine(InvestigationToolRegistry tools, OpenRouterClient openRouterClient) {
         this.tools = tools;
+        this.openRouterClient = openRouterClient;
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(3))
                 .build();
@@ -34,22 +39,49 @@ public class InvestigationEngine {
         String startTime = String.valueOf(System.currentTimeMillis());
         List<InvestigationStepDto> steps = new ArrayList<>();
 
+        // Step 2 tools: Contract & Source
+        ContractEvidence contract = tools.inspectContract(request);
+        SourcePolicyEvidence source = tools.inspectSourcePolicy(request);
+        MappingEvidence mapping = tools.inspectMapping(request);
+
+        String expectedDesc = !contract.declaredRoles().isEmpty()
+                ? "Role " + String.join(", ", contract.declaredRoles()) : (contract.requiresAuth() ? "Authenticated" : "Public");
+        String implDesc = source.effectivePolicy() != null && !source.effectivePolicy().effectiveRoles().isEmpty()
+                ? "Role " + String.join(", ", source.effectivePolicy().effectiveRoles()) : "Authenticated / Default";
+
+        // Query OpenRouter free model if configured/provided
+        Optional<LlmInvestigationResponse> llmOpt = openRouterClient.queryInvestigation(
+                request.openRouterApiKey(),
+                request.openRouterModel(),
+                request.method(),
+                request.path(),
+                request.verdict(),
+                expectedDesc,
+                implDesc,
+                source.sourceFile(),
+                source.lineStart()
+        );
+
+        String modelName = llmOpt.isPresent()
+                ? "OpenRouter (" + llmOpt.get().modelUsed() + ")"
+                : "OpenRouter Free / Built-in Deterministic Engine";
+
         // Step 1: Retrieve Finding & Official Analyzer Verdict
         steps.add(InvestigationStepDto.of(
                 1,
-                "Retrieve Finding & Deterministic Verdict",
+                "Retrieve Finding & Initialize AI Reasoner",
                 "getFinding",
                 "SUCCESS",
                 "Loaded official analyzer verdict for endpoint " + request.method() + " " + request.path()
-                        + " with verdict: " + request.verdict(),
+                        + " with verdict: " + request.verdict() + " [" + modelName + "]",
                 Map.of("findingId", request.findingId() != null ? request.findingId() : "N/A",
-                       "endpoint", request.method() + " " + request.path()),
+                       "endpoint", request.method() + " " + request.path(),
+                       "aiProvider", modelName),
                 Map.of("verdict", request.verdict() != null ? request.verdict() : "MISMATCH",
                        "reason", request.reason() != null ? request.reason() : "Policy discrepancy detected")
         ));
 
         // Step 2: Inspect OpenAPI Contract Requirements
-        ContractEvidence contract = tools.inspectContract(request);
         steps.add(InvestigationStepDto.of(
                 2,
                 "Inspect OpenAPI Contract Security Specifications",
@@ -65,7 +97,6 @@ public class InvestigationEngine {
         ));
 
         // Step 3: Inspect AST Source Security Policy & Rule Precedence
-        SourcePolicyEvidence source = tools.inspectSourcePolicy(request);
         steps.add(InvestigationStepDto.of(
                 3,
                 "Examine Implementation AST Security Rules & Rule Precedence",
@@ -80,7 +111,6 @@ public class InvestigationEngine {
         ));
 
         // Step 4: Verify Endpoint Mapping Correlation
-        MappingEvidence mapping = tools.inspectMapping(request);
         steps.add(InvestigationStepDto.of(
                 4,
                 "Correlate Endpoint Mapping & Uncertainty",
@@ -94,6 +124,25 @@ public class InvestigationEngine {
 
         // Step 5: Formulate Discrepancy-Directed Verification Test
         ProposedTestDto proposedTest = tools.formulateRuntimeTest(request, contract, source);
+        if (llmOpt.isPresent() && llmOpt.get().testRationale() != null) {
+            proposedTest = new ProposedTestDto(
+                    proposedTest.testId(),
+                    proposedTest.endpointPath(),
+                    proposedTest.httpMethod(),
+                    proposedTest.testPrincipalRole(),
+                    llmOpt.get().testRationale(),
+                    proposedTest.targetUrl(),
+                    proposedTest.requestHeaders(),
+                    proposedTest.requestBody(),
+                    proposedTest.expectedStatusCode(),
+                    proposedTest.observedStatusCode(),
+                    proposedTest.requiresApproval(),
+                    proposedTest.approved(),
+                    proposedTest.executionStatus(),
+                    proposedTest.observedResponseSummary()
+            );
+        }
+
         steps.add(InvestigationStepDto.of(
                 5,
                 "Formulate Targeted Verification Probe",
@@ -107,6 +156,22 @@ public class InvestigationEngine {
 
         // Step 6: Generate Remediation Patch & Regression Test Suite
         RemediationDto remediation = tools.generateRemediation(request, contract, source);
+        if (llmOpt.isPresent()) {
+            LlmInvestigationResponse llm = llmOpt.get();
+            remediation = new RemediationDto(
+                    remediation.summary(),
+                    remediation.explanation(),
+                    remediation.targetFile(),
+                    remediation.targetLine(),
+                    remediation.originalSnippet(),
+                    remediation.remediatedSnippet(),
+                    llm.patchDiff() != null && !llm.patchDiff().isBlank() ? llm.patchDiff() : remediation.patchDiff(),
+                    llm.regressionTestCode() != null && !llm.regressionTestCode().isBlank() ? llm.regressionTestCode() : remediation.regressionTestCode(),
+                    llm.recommendations() != null ? llm.recommendations() : remediation.preventiveRecommendations(),
+                    remediation.simulatedVerdictAfterFix()
+            );
+        }
+
         steps.add(InvestigationStepDto.of(
                 6,
                 "Synthesize Remediation Patch & Regression Tests",
@@ -131,17 +196,16 @@ public class InvestigationEngine {
         ));
 
         // Build Investigation Diagnosis
-        String expectedDesc = !contract.declaredRoles().isEmpty()
-                ? "Role " + String.join(", ", contract.declaredRoles()) : (contract.requiresAuth() ? "Authenticated" : "Public");
-        String implDesc = source.effectivePolicy() != null && !source.effectivePolicy().effectiveRoles().isEmpty()
-                ? "Role " + String.join(", ", source.effectivePolicy().effectiveRoles()) : "Authenticated / Default";
+        String rootCauseAnalysis = (llmOpt.isPresent() && llmOpt.get().rootCause() != null)
+                ? llmOpt.get().rootCause()
+                : "OpenAPI contract mandates [" + expectedDesc + "] authorization, while the Spring controller implementation in "
+                        + source.sourceFile() + " (line " + source.lineStart() + ") only enforces [" + implDesc + "]. "
+                        + "This creates an unintended authorization relaxation where lower-privileged principals can access protected resources.";
 
         InvestigationDiagnosisDto diagnosis = new InvestigationDiagnosisDto(
                 request.verdict() != null ? request.verdict() : "MISMATCH",
                 "HIGH",
-                "OpenAPI contract mandates [" + expectedDesc + "] authorization, while the Spring controller implementation in "
-                        + source.sourceFile() + " (line " + source.lineStart() + ") only enforces [" + implDesc + "]. "
-                        + "This creates an unintended authorization relaxation where lower-privileged principals can access protected resources.",
+                rootCauseAnalysis,
                 "Contract requires " + expectedDesc,
                 "Implementation enforces " + implDesc,
                 "Method-level annotation tier (precedence 5000) successfully resolved.",
@@ -254,8 +318,6 @@ public class InvestigationEngine {
             responseSummary = "HTTP " + observedCode + " - Target response received (" + (resp.body() != null ? resp.body().length() : 0) + " bytes).";
             actualNetworkCallSucceeded = true;
         } catch (Exception ex) {
-            // If the local test target server is not currently running, simulate the deterministic observation
-            // with honest notification so local offline tests remain fully verifiable
             observedCode = test.expectedStatusCode();
             responseSummary = "Simulated local target verification (Target server offline: " + ex.getClass().getSimpleName() + "). "
                     + "Expected HTTP " + observedCode + " confirmed by static rule hierarchy.";

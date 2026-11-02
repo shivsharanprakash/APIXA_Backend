@@ -2,9 +2,11 @@ package com.apixa.conformance.investigation;
 
 import com.apixa.common.model.SecurityPolicy;
 import com.apixa.conformance.investigation.engine.InvestigationEngine;
+import com.apixa.conformance.investigation.llm.OpenRouterClient;
 import com.apixa.conformance.investigation.model.*;
 import com.apixa.conformance.investigation.service.InvestigationService;
 import com.apixa.conformance.investigation.tools.InvestigationToolRegistry;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +21,8 @@ class InvestigationAgentTest {
     @BeforeEach
     void setUp() {
         InvestigationToolRegistry tools = new InvestigationToolRegistry();
-        InvestigationEngine engine = new InvestigationEngine(tools);
+        OpenRouterClient openRouter = new OpenRouterClient(new ObjectMapper());
+        InvestigationEngine engine = new InvestigationEngine(tools, openRouter);
         service = new InvestigationService(engine);
     }
 

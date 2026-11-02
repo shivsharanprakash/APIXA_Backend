@@ -17,6 +17,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <artifactId>apixa-common</artifactId>
 </dependency>
 <dependency>
+<groupId>com.fasterxml.jackson.core</groupId>
+<artifactId>jackson-databind</artifactId>
+</dependency>
+<dependency>
 <groupId>org.xerial</groupId>
 <artifactId>sqlite-jdbc</artifactId>
 </dependency>
