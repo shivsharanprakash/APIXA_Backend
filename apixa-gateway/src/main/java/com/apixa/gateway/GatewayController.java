@@ -47,6 +47,7 @@ public class GatewayController {
             Map.entry("/api/source", "source-analysis-service"),
             Map.entry("/api/mappings", "mapping-service"),
             Map.entry("/api/conformance", "conformance-service"),
+            Map.entry("/api/investigation", "conformance-service"),
             Map.entry("/api/evidence", "evidence-service"),
             Map.entry("/api/runtime", "runtime-service"),
             Map.entry("/api/impact", "impact-service"),
